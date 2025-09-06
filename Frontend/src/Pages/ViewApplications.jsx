@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {  assets } from '../assets/assets'
+import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 import Loader from '../Components/Loading'
 import Pagination from '../Components/Pagination'
@@ -7,17 +7,13 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 const ViewApplications = () => {
 
-  const { backendUrl, companyToken } = useContext(AppContext)
+  const { companyToken } = useContext(AppContext)
   const [applicants, setApplicants] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
   const fetchCompanyJobApplications = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/company/applicants',
-        {
-          headers: { token: companyToken }
-        }
-      )
+      const { data } = await axios.get('/api/company/applicants')
 
       if (data.success) {
         setApplicants(data.applications.reverse())
@@ -32,11 +28,8 @@ const ViewApplications = () => {
   }
   const changeJobApplicationStatus = async (id, status) => {
     try {
-      const { data } = await axios.post(backendUrl + '/api/company/change-status',
-        { id, status },
-        {
-          headers: { token: companyToken }
-        }
+      const { data } = await axios.post('/api/company/change-status',
+        { id, status }
       )
       if (data.success) {
         fetchCompanyJobApplications()
@@ -123,9 +116,9 @@ const ViewApplications = () => {
             </tbody>
           </table>
         </div>
-       
-          <Pagination list={applicants} page={currentPage} setPage={setCurrentPage} perPage={7} />
-        
+
+        <Pagination list={applicants} page={currentPage} setPage={setCurrentPage} perPage={7} />
+
 
       </div>
     ) : <Loader />

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import moment from 'moment-jalaali'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -14,14 +14,23 @@ const ManageJobs = () => {
     usePersianDigits: true
   })
 
+
   const navigate = useNavigate()
   const [jobs, setJobs] = useState(false)
-  const { backendUrl, companyToken, getJobs } = useContext(AppContext)
+  const [checkedJobs, setCheckedJobs] = useState([]);
+  const { companyToken, getJobs } = useContext(AppContext)
   const [currentPage, setCurrentPage] = useState(1)
+
+
+  const handleCheck = (id) => {
+    setCheckedJobs(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
 
   const fetchJobs = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/company/list-jobs', { headers: { token: companyToken } })
+      const { data } = await axios.get('/api/company/list-jobs')
 
       if (data.success) {
         setJobs(data.jobsData.reverse())
@@ -34,9 +43,24 @@ const ManageJobs = () => {
     }
 
   }
+  const removeJobs = async (e) => {
+
+    try {
+      const { data } = await axios.post(`/api/company/delete-jobs`, { ids: checkedJobs })
+
+      if (data.success) {
+        toast.success(data.message)
+        await fetchJobs()
+        setCheckedJobs([])
+        getJobs()
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
   const changeJobVisibility = async (id) => {
     try {
-      const { data } = await axios.post(backendUrl + '/api/company/change-visiblity', { id }, { headers: { token: companyToken } })
+      const { data } = await axios.post('/api/company/change-visiblity', { id })
       if (data.success) {
         toast.success("با موقیت تغییرات اعمال شد")
         fetchJobs()
@@ -48,11 +72,15 @@ const ManageJobs = () => {
       toast.error(error.message)
     }
   }
+
   useEffect(() => {
     if (companyToken) {
       fetchJobs()
     }
+
   }, [companyToken])
+
+
   return jobs ? jobs.length === 0 ?
     (<div className='flex items-center justify-center h-[90vh] flex-1 '>
       <p className='text-xl sm:text-2xl '>هیچ کاری در دسترس نیست یا پست نشده</p>
@@ -65,6 +93,7 @@ const ManageJobs = () => {
             <table className='min-w-max sm:min-w-full bg-white border border-gray-200 '>
               <thead>
                 <tr className='border-b'>
+                  <th className='px-4 py-3 border-b text-right '>عملیات</th>
                   <th className='px-4 py-3 border-b text-right'>#</th>
                   <th className='px-4 py-3 border-b text-right'>عنوان کار</th>
                   <th className='px-4 py-3 border-b text-right '>تاریخ</th>
@@ -76,6 +105,12 @@ const ManageJobs = () => {
               <tbody>
                 {jobs.slice((currentPage - 1) * 7, (currentPage) * 7).map((item, idx) => (
                   <tr key={idx} className='text-gray-700'>
+                    <td className='px-4 py-3 border-b scale-125 text-center'>
+                      <input type="checkbox" id=""
+                        onChange={() => handleCheck(item._id)}
+                        checked={checkedJobs.includes(item._id) }
+                      />
+                    </td>
                     <td className='px-4 py-3 border-b '>{idx + 1}</td>
                     <td className='px-4 py-3 border-b  '>{item.title}</td>
                     <td className='px-4 py-3 border-b  '>{moment(item.date).locale("fa").format('jDD jMMMM jYYYY ')}</td>
@@ -86,15 +121,34 @@ const ManageJobs = () => {
                         onChange={() => changeJobVisibility(item._id)}
                         checked={item.visible} className='scale-125 ml-4' type="checkbox" />
                     </td>
+
                   </tr>
                 ))
                 }
               </tbody>
             </table>
           </div>
+          <div className='flex items-center gap-1'>
+            {checkedJobs.length ?
+              <button
+                onClick={removeJobs}
+                className='bg-red-600 text-white w-[60px] py-2  rounded mt-7'>حذف</button>
+              : null
+            }
+            {checkedJobs.length == 1 ?
+              <Link to={`/dashboard/update-job/${checkedJobs[0]}`}>
+                <button
+                  className='bg-blue-600 text-white w-[90px] py-2  rounded mt-7'>بروزرسانی</button>
+              </Link>
+              : null
+            }
+          </div>
+
           <button
             onClick={() => navigate('/dashboard/add-job')}
-            className='bg-black/70 text-white w-[150px] py-2 px-8 rounded mt-6'>ایجاد کار</button>
+            className='bg-black/70 text-white w-[155px] py-2  rounded mt-4'>ایجاد کار</button>
+
+
 
 
           <Pagination list={jobs} page={currentPage} setPage={setCurrentPage} perPage={7} />

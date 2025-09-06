@@ -5,9 +5,12 @@ import { useUser, useAuth } from '@clerk/clerk-react'
 import { useNavigate } from 'react-router-dom'
 
 export const AppContext = createContext()
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+axios.defaults.baseURL = backendUrl
+console.log(axios.defaults.baseURL);
 
 const AppContextProvider = ({ children }) => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+
     const navigate = useNavigate()
     const { user } = useUser()
 
@@ -25,7 +28,8 @@ const AppContextProvider = ({ children }) => {
 
     const getJobs = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/jobs')
+            const { data } = await axios.get('/api/jobs')
+
             if (data.success) {
                 setJobs(data.jobs)
             } else {
@@ -38,10 +42,9 @@ const AppContextProvider = ({ children }) => {
     }
     const fetchCompanyData = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/company/company', { headers: { token: companyToken } })
+            const { data } = await axios.get('/api/company/company')
             if (data.success) {
                 setCompanyData(data.company)
-
             } else {
                 toast.error(data.message)
             }
@@ -54,7 +57,7 @@ const AppContextProvider = ({ children }) => {
         try {
             const token = await getToken()
 
-            const { data } = await axios.get(backendUrl + '/api/users/user', {
+            const { data } = await axios.get('/api/users/user', {
                 headers: { Authorization: `Bearer ${token}` }
             })
 
@@ -74,7 +77,7 @@ const AppContextProvider = ({ children }) => {
             const token = await getToken()
             console.log(token);
 
-            const { data } = await axios.get(backendUrl + '/api/users/applications', {
+            const { data } = await axios.get('/api/users/applications', {
                 headers: { Authorization: `Bearer ${token}` }
             })
 
@@ -85,15 +88,16 @@ const AppContextProvider = ({ children }) => {
                 setUserApplications([])
             }
         } catch (error) {
-            toast.error(error.message, {  })
+            toast.error(error.message, {})
 
         }
     }
 
     const logoutHandler = () => {
         setCompanyData(null)
-        setCompanyToken(null)
+        // setCompanyToken(null)
         localStorage.removeItem('companyToken')
+        axios.defaults.headers.common['token'] = null
         navigate('/')
         toast.success("با موفقیت خارج شدید")
     }
@@ -103,8 +107,9 @@ const AppContextProvider = ({ children }) => {
         const storedCompanyToken = localStorage.getItem('companyToken')
         if (storedCompanyToken) {
             setCompanyToken(storedCompanyToken)
+            axios.defaults.headers.common['token'] = storedCompanyToken
         }
-        
+
     }, [])
     useEffect(() => {
         if (companyToken) {
@@ -127,7 +132,6 @@ const AppContextProvider = ({ children }) => {
         showRecruiterLogin, setShowRecruiterLogin,
         companyToken, setCompanyToken,
         companyData, setCompanyData,
-        backendUrl,
         userData, setUserData,
         userApplications, setUserApplications,
         fetchUsersData,

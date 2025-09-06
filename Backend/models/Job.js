@@ -8,6 +8,7 @@ const jobSchema = new mongoose.Schema({
     level: { type: String, requred: true },
     salary: { type: Number, requred: true },
     date: { type: Number, requred: true },
+    updatedAt: { type: Number },
     visible: { type: Boolean, default: true },
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Company', requred: true },
 })

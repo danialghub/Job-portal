@@ -22,7 +22,7 @@ const Applications = () => {
     const [isEdit, setIsEdit] = useState(false)
     const [resume, setResume] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
-    const { backendUrl, userData, userApplications, fetchUsersData, fetchUserApplications } = useContext(AppContext)
+    const {  userData, userApplications, fetchUsersData, fetchUserApplications } = useContext(AppContext)
 
 
     const updateResume = async () => {
@@ -31,7 +31,7 @@ const Applications = () => {
             formData.append('resume', resume)
             const token = await getToken()
 
-            const { data } = await axios.post(backendUrl + '/api/users/update-resume', formData, {
+            const { data } = await axios.post( '/api/users/update-resume', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             })
 
@@ -53,6 +53,7 @@ const Applications = () => {
             fetchUserApplications()
         }
     }, [user])
+
     return userApplications ? (
         <>
             <Navbar />

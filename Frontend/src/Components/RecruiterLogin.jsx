@@ -17,7 +17,7 @@ const RecruiterLogin = () => {
 
     const [isTextDataSubmited, setIsTextDataSubmited] = useState(false)
 
-    const { setShowRecruiterLogin, backendUrl, setCompanyToken, setCompanyData } = useContext(AppContext)
+    const { setShowRecruiterLogin, setCompanyToken, setCompanyData } = useContext(AppContext)
 
 
 
@@ -29,10 +29,11 @@ const RecruiterLogin = () => {
         try {
 
             if (state == "ورود") {
-                const { data } = await axios.post(backendUrl + "/api/company/login", { email, password })
+                const { data } = await axios.post("/api/company/login", { email, password })
                 if (data.success) {
                     setCompanyData(data.company)
-                    setCompanyToken(data.token)
+                    // setCompanyToken(data.token)
+                    axios.defaults.headers.common['token'] = data.token
                     localStorage.setItem('companyToken', data.token)
                     setShowRecruiterLogin(false)
                     navigate('/dashboard')
@@ -48,10 +49,11 @@ const RecruiterLogin = () => {
                 formData.append('password', password)
                 formData.append('image', image)
 
-                const { data } = await axios.post(backendUrl + "/api/company/register", formData)
+                const { data } = await axios.post("/api/company/register", formData)
                 if (data.success) {
                     setCompanyData(data.company)
                     setCompanyToken(data.token)
+                    axios.defaults.headers.common['token'] = data.token
                     localStorage.setItem('companyToken', data.token)
                     setShowRecruiterLogin(false)
                     navigate('/dashboard')

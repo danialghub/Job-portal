@@ -110,12 +110,52 @@ export const postJob = async (req, res) => {
             companyId
         })
         await newJob.save()
-        res.json({ success: true, newJob })
+        res.json({ success: true, message: "کار با موفقیت ایجاد شد" })
     } catch (error) {
         res.json({ success: false, message: error.message })
     }
 }
+//delete a job
+export const removeJobs = async (req, res) => {
+    console.log("hello");
 
+    try {
+        const { ids } = req.body
+        console.log(ids);
+
+        await Job.deleteMany({ _id: { $in: ids } })
+
+        ids.length > 1
+            ? res.json({ success: true, message: "کارها با موفقیت حذف گردیدند" })
+            : res.json({ success: true, message: "کار با موفقیت حذف گردید" })
+
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
+//update job
+export const UpdateJob = async (req, res) => {
+    const { jobId, title, description, salary, location, level, category } = req.body
+
+    console.log(jobId);
+
+    try {
+        await Job.findByIdAndUpdate(jobId,
+            {
+                title,
+                description,
+                salary,
+                location,
+                level,
+                category,
+                updatedAt: Date.now()
+            }
+        )
+        res.json({ success: true, message: "کار مورد نظر با موفقیت بروز شد" })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
 //get company job applicants
 export const getCompanyJobApplicants = async (req, res) => {
     try {

@@ -3,6 +3,7 @@ import { Outlet, useNavigate, NavLink } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 import Navbar from '../Components/Navbar'
+import { FaHome } from "react-icons/fa";
 const Dashboard = () => {
     const navigate = useNavigate()
     const { companyData } = useContext(AppContext)
@@ -12,21 +13,27 @@ const Dashboard = () => {
         { title: 'مشاهده درخواست ها', route: '/dashboard/view-applications', icon: assets.person_tick_icon },
     ]
     useEffect(() => {
-
         if (companyData && location.pathname === "/dashboard") {
             navigate('/dashboard/manage-jobs')
         }
+        scrollTo(0, 0)
     }, [companyData])
     return (
 
         <div className='min-h-screen '>
             {/* navbar for recruiter Login */}
             <Navbar >
-                <li className='py-2 px-4 cursor-pointer pr-10'>
-                    <NavLink to="/">خانه</NavLink>
+                <li className='py-2 cursor-pointer pr-1  '>
+
+                    <NavLink to="/"
+                        className='flex items-center gap-2'
+                    >
+                        <FaHome fontSize={18} />
+                        خانه
+                    </NavLink>
                 </li>
             </Navbar>
-
+            {/* main Content */}
             <div className='flex items-start '>
                 {/* left Sidebar  */}
                 <div className='inline-block min-h-screen border-l-2 '>

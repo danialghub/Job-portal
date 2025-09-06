@@ -12,9 +12,7 @@ export const getJobs = async (req, res) => {
 
 //Get a single job by ID
 export const getJobById = async (req, res) => {
-    
     const { id } = req.params
-
     try {
         const job = await Job.findById(id)
             .populate({ path: 'companyId', select: "-password" })
@@ -29,3 +27,4 @@ export const getJobById = async (req, res) => {
     }
 
 }
+

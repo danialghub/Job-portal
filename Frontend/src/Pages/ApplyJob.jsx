@@ -18,7 +18,7 @@ import { useAuth } from '@clerk/clerk-react'
 const ApplyJob = () => {
 
   const { id } = useParams()
-  const { jobs, backendUrl, userData, userApplications, fetchUserApplications } = useContext(AppContext)
+  const { jobs, userData, userApplications, fetchUserApplications } = useContext(AppContext)
   const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
 
   const [jobData, setJobData] = useState(null)
@@ -26,7 +26,7 @@ const ApplyJob = () => {
   const navigate = useNavigate()
 
   const fetchData = async () => {
-    const { data } = await axios.get(backendUrl + `/api/jobs/${id}`)
+    const { data } = await axios.get(  `/api/jobs/${id}`)
     try {
       if (data.success) {
         setJobData(data.job)
@@ -50,7 +50,7 @@ const ApplyJob = () => {
         return toast.error("رزومه خود را آپلود کنید برای درخواست دادن", {})
       }
       const token = await getToken()
-      const { data } = await axios.post(backendUrl + '/api/users/apply', { jobId: jobData._id }, {
+      const { data } = await axios.post(  '/api/users/apply', { jobId: jobData._id }, {
         headers: { Authorization: `Bearer ${token}` }
       })
       if (data.success) {
@@ -71,7 +71,6 @@ const ApplyJob = () => {
 
   useEffect(() => {
     fetchData()
-
   }, [id, isAlreadyApplied])
   useEffect(() => {
     if (userApplications.length && jobData) {

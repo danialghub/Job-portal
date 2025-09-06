@@ -8,6 +8,7 @@ import Applications from './Pages/Applications'
 import { useContext } from 'react'
 import { AppContext } from './context/AppContext'
 import { useRoutes } from 'react-router-dom'
+import UpdateJob from './Pages/UpdateJob'
 
 const AppRoutes = () => {
     const { companyToken, userData } = useContext(AppContext)
@@ -40,6 +41,10 @@ const AppRoutes = () => {
                 {
                     path: 'view-applications',
                     element: <ViewApplications />
+                },
+                {
+                    path: 'update-job/:jobId',
+                    element: <UpdateJob />
                 },
             ] : [{
                 path: "*", element:
