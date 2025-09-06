@@ -5,6 +5,8 @@ import Loader from '../Components/Loading'
 import Pagination from '../Components/Pagination'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { IoMdClose, IoMdCheckmark } from "react-icons/io";
+
 const ViewApplications = () => {
 
   const { companyToken } = useContext(AppContext)
@@ -19,10 +21,10 @@ const ViewApplications = () => {
         setApplicants(data.applications.reverse())
 
       } else {
-        toast.error(data.message, {})
+        toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message, {})
+      toast.error(error.message)
 
     }
   }
@@ -68,7 +70,7 @@ const ViewApplications = () => {
                 <th className='px-4 py-2 text-right '>عنوان شغل</th>
                 <th className='px-4 py-2 text-right '>مکان</th>
                 <th className='px-4 py-2 text-right'>رزومه</th>
-                <th className='px-4 py-2 text-right'>وضعیت</th>
+                <th className='px-4 py-2 text-right'>وضعیت پذیرش</th>
               </tr>
             </thead>
             <tbody>
@@ -93,16 +95,20 @@ const ViewApplications = () => {
 
                   <td className='px-4 py-2 text-center  border-b relative '>
                     {data.status === "در حال انتظار"
-                      ? (<div className='relative inline-block ml-10   group'>
-                        <button className='text-gray-500 action-button '>...</button>
-                        <div className='z-10 hidden absolute top-0 -right-10 md:left-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow group-hover:block'>
-                          <button
-                            onClick={() => changeJobApplicationStatus(data._id, "قبول شده")}
-                            className='block w-full text-right px-4 py-2 text-blue-500 hover:bg-gray-100'>قبول شده</button>
-                          <button
-                            onClick={() => changeJobApplicationStatus(data._id, "رد شده")}
-                            className='block w-full text-right px-4 py-2 text-red-500 hover:bg-gray-100'>رد شده</button>
-                        </div>
+                      ? (<div className='flex items-center gap-1'>
+
+                        <button
+                        onClick={()=> changeJobApplicationStatus(data._id , 'قبول شده')}
+                        className=' px-2 py-1 rounded bg-green-100 '>
+                          <IoMdCheckmark fontSize={20} className='text-green-500' />
+                        </button>
+
+                        <button
+                        onClick={()=> changeJobApplicationStatus(data._id , 'رد شده')}
+                        className='px-2 py-1 rounded bg-red-100 '>
+                          <IoMdClose fontSize={20} className='text-red-500' />
+                        </button>
+
                       </div>)
                       : <div className='text-right '>{data.status}</div>
 

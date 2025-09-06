@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       {showRecruiterLogin && <RecruiterLogin />}
-      <div className='max-sm:w-[80vw] max-sm:mx-auto ' >
+      <div className='max-sm:w-[85vw] max-sm:mx-auto ' >
         <ToastContainer
           autoClose={2000}
           rtl={true}

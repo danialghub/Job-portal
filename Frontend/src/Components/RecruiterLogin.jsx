@@ -32,15 +32,15 @@ const RecruiterLogin = () => {
                 const { data } = await axios.post("/api/company/login", { email, password })
                 if (data.success) {
                     setCompanyData(data.company)
-                    // setCompanyToken(data.token)
+                    setCompanyToken(data.token)
                     axios.defaults.headers.common['token'] = data.token
                     localStorage.setItem('companyToken', data.token)
                     setShowRecruiterLogin(false)
                     navigate('/dashboard')
-                    toast.success("با موفقیت وارد شدید", { className: "max-sm:w-[70vw] max-sm:mt-3 max-sm:mx-auto" })
+                    toast.success("با موفقیت وارد شدید")
 
                 } else {
-                    toast.error("Invalid Email Or Password!", { className: "max-sm:w-[70vw] max-sm:mt-3 max-sm:mx-auto" })
+                    toast.error("ایمیل یا رمزعبور نامعتبر است!")
                 }
             } else {
                 const formData = new FormData()
@@ -57,15 +57,15 @@ const RecruiterLogin = () => {
                     localStorage.setItem('companyToken', data.token)
                     setShowRecruiterLogin(false)
                     navigate('/dashboard')
-                    toast.success("حساب شما با موفقیت ایجاد شد", { className: "max-sm:w-[70vw] max-sm:mt-3 max-sm:mx-auto" })
+                    toast.success("حساب شما با موفقیت ایجاد شد")
 
                 } else {
-                    toast.error(data.message, { className: "max-sm:w-[70vw] max-sm:mt-3 max-sm:mx-auto" })
+                    toast.error(data.message)
                 }
             }
 
         } catch (error) {
-            toast.error(error.message, { className: "max-sm:w-[70vw] max-sm:mt-3 max-sm:mx-auto" })
+            toast.error(error.message)
         }
     }
 

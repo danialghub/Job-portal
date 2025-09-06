@@ -5,7 +5,7 @@ import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import JobCard from '../Components/JobCard'
 import Loading from '../Components/Loading'
-import kConvert from 'k-convert'
+// import kConvert from 'k-convert'
 import { assets } from '../assets/assets'
 import moment from 'moment/min/moment-with-locales'
 
@@ -19,14 +19,29 @@ const ApplyJob = () => {
 
   const { id } = useParams()
   const { jobs, userData, userApplications, fetchUserApplications } = useContext(AppContext)
+
   const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
 
   const [jobData, setJobData] = useState(null)
+
+  // const formatterToman = new Intl.NumberFormat('fa-IR')
+
   const { getToken } = useAuth()
   const navigate = useNavigate()
 
+  const kConvertFa = (num) => {
+    if (num >= 1_000_000_000) {
+      return (Number.isInteger(num / 1_000_000_000) ? num / 1_000_000_000 : (num / 1_000_000_000).toFixed(3)) + " میلیارد IRT"
+    } else if (num >= 1_000_000) {
+      return (Number.isInteger(num / 1_000_000) ? num / 1_000_000 : (num / 1_000_000).toFixed(3)) + " میلیون IRT"
+    } else if (num >= 1_000) {
+      return (Number.isInteger(num / 1_000) ? num / 1_000 : (num / 1_000).toFixed(3)) + " هزار IRT"
+    }
+    return num.toString()
+  }
+
   const fetchData = async () => {
-    const { data } = await axios.get(  `/api/jobs/${id}`)
+    const { data } = await axios.get(`/api/jobs/${id}`)
     try {
       if (data.success) {
         setJobData(data.job)
@@ -43,25 +58,25 @@ const ApplyJob = () => {
     try {
 
       if (!userData) {
-        return toast.error("ابتدا وارد شوید برای درخواست دادن", {})
+        return toast.error("ابتدا وارد شوید برای درخواست دادن")
       }
       if (!userData.resume) {
         navigate('/applications')
-        return toast.error("رزومه خود را آپلود کنید برای درخواست دادن", {})
+        return toast.error("رزومه خود را آپلود کنید برای درخواست دادن")
       }
       const token = await getToken()
-      const { data } = await axios.post(  '/api/users/apply', { jobId: jobData._id }, {
+      const { data } = await axios.post('/api/users/apply', { jobId: jobData._id }, {
         headers: { Authorization: `Bearer ${token}` }
       })
       if (data.success) {
         fetchUserApplications()
-        return toast.success(data.message, {})
+        return toast.success(data.message)
 
       } else {
-        toast.error(data.message, {})
+        toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message, {})
+      toast.error(error.message)
     }
   }
   const checkAlreadyExist = async () => {
@@ -97,7 +112,7 @@ const ApplyJob = () => {
 
             <div className='text-center md:text-right text-neutral-700'>
               <h3 className='text-2xl sm:text-4xl mb-4 font-medium'>{jobData.title}</h3>
-              <div className='grid max-sm:grid-cols-2 sm:grid-flow-col max-sm:gap-y-3  gap-x-5 text-gray-600  text-sm h-6 '>
+              <div className='grid max-sm:grid-cols-2 sm:grid-flow-col max-sm:gap-y-3  gap-x-3 sm:gap-x-5 text-gray-600  text-sm h-6 '>
                 <span className="flex  gap-1 items-center">
                   <img src={assets.suitcase_icon} alt="" />
                   {jobData.companyId.name}
@@ -112,7 +127,7 @@ const ApplyJob = () => {
                 </span>
                 <span className="flex gap-1 items-center">
                   <img src={assets.money_icon} alt="" />
-                  حقوق: {kConvert.convertTo(jobData.salary)}
+                  {kConvertFa(jobData.salary)}
                 </span>
 
 

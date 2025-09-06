@@ -88,14 +88,14 @@ const AppContextProvider = ({ children }) => {
                 setUserApplications([])
             }
         } catch (error) {
-            toast.error(error.message, {})
+            toast.error(error.message)
 
         }
     }
 
     const logoutHandler = () => {
         setCompanyData(null)
-        // setCompanyToken(null)
+        setCompanyToken(null)
         localStorage.removeItem('companyToken')
         axios.defaults.headers.common['token'] = null
         navigate('/')
