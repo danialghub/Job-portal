@@ -7,6 +7,13 @@ const userSchema = new mongoose.Schema({
     resume: { type: String },
     image: { type: String, required: true },
 })
+userSchema.pre('findOneAndDelete', async function (next) {
+    const user = await this.model.findOne(this.getFilter())
+    if (user)
+        await mongoose.model('JobApplication').deleteMany({ userId: user._id })
+    next()
+})
+
 const User = mongoose.model('User', userSchema, 'User')
 
 export default User

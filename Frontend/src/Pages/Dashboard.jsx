@@ -5,13 +5,17 @@ import { AppContext } from '../context/AppContext'
 import Navbar from '../Components/Navbar'
 import { FaHome } from "react-icons/fa";
 const Dashboard = () => {
+        console.log('Dashboard');
     const navigate = useNavigate()
     const { companyData } = useContext(AppContext)
+    
     const navMenu = [
         { title: 'ایجاد کار', route: '/dashboard/add-job', icon: assets.add_icon },
         { title: 'مدیریت کارها', route: '/dashboard/manage-jobs', icon: assets.home_icon },
         { title: 'مشاهده درخواست ها', route: '/dashboard/view-applications', icon: assets.person_tick_icon },
+        { title: 'پروفایل', route: '/dashboard/profile', icon: assets.person_tick_icon },
     ]
+
     useEffect(() => {
         if (companyData && location.pathname === "/dashboard") {
             navigate('/dashboard/manage-jobs')

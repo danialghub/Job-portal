@@ -34,6 +34,8 @@ import samsung_logo from './samsung_logo.png'
 import adobe_logo from './adobe_logo.png'
 import amazon_logo from './amazon_logo.png'
 import dlLogo from './dlLogo.png'
+import avatar_icon from './avatar_icon.png'
+import company_place_holder from './company-place-holder.jpg'
 export const assets = {
     logo,
     search_icon,
@@ -70,7 +72,9 @@ export const assets = {
     samsung_logo,
     adobe_logo,
     amazon_logo,
-    dlLogo
+    dlLogo,
+    avatar_icon,
+    company_place_holder
 }
 
 export const JobCategories = [
@@ -168,23 +172,23 @@ export const JobLocations = [
 //             "image": company_icon,
 //         },
 //         description: `
-        // <p>We are seeking a highly skilled Full Stack Developer to join our dynamic and innovative team. The ideal candidate will have a passion for developing scalable web applications and working across the entire technology stack, including front-end and back-end development. You will have the opportunity to work with the latest technologies and contribute to exciting projects that impact our users directly.</p>
-        // <h2><strong>Key Responsibilities</strong></h2>
-        // <ol>
-        //     <li>Build, test, and deploy highly responsive web applications.</li>
-        //     <li>Design user-friendly interfaces using HTML, CSS, and JavaScript.</li>
-        //     <li>Develop and maintain APIs and databases to support application functionality.</li>
-        //     <li>Collaborate with cross-functional teams to define, design, and ship new features.</li>
-        //     <li>Identify and resolve bottlenecks and bugs to optimize application performance.</li>
-        // </ol>
-        // <h2><strong>Skills Required</strong></h2>
-        // <ol>
-        //     <li>Proficiency in HTML, CSS, and JavaScript frameworks (e.g., React, Angular).</li>
-        //     <li>Experience with server-side languages (e.g., Node.js, Python).</li>
-        //     <li>Familiarity with relational and non-relational databases (e.g., MySQL, MongoDB).</li>
-        //     <li>Strong understanding of web security and performance optimization.</li>
-        //     <li>Ability to work in an Agile environment.</li>
-        // </ol>`,
+// <p>We are seeking a highly skilled Full Stack Developer to join our dynamic and innovative team. The ideal candidate will have a passion for developing scalable web applications and working across the entire technology stack, including front-end and back-end development. You will have the opportunity to work with the latest technologies and contribute to exciting projects that impact our users directly.</p>
+// <h2><strong>Key Responsibilities</strong></h2>
+// <ol>
+//     <li>Build, test, and deploy highly responsive web applications.</li>
+//     <li>Design user-friendly interfaces using HTML, CSS, and JavaScript.</li>
+//     <li>Develop and maintain APIs and databases to support application functionality.</li>
+//     <li>Collaborate with cross-functional teams to define, design, and ship new features.</li>
+//     <li>Identify and resolve bottlenecks and bugs to optimize application performance.</li>
+// </ol>
+// <h2><strong>Skills Required</strong></h2>
+// <ol>
+//     <li>Proficiency in HTML, CSS, and JavaScript frameworks (e.g., React, Angular).</li>
+//     <li>Experience with server-side languages (e.g., Node.js, Python).</li>
+//     <li>Familiarity with relational and non-relational databases (e.g., MySQL, MongoDB).</li>
+//     <li>Strong understanding of web security and performance optimization.</li>
+//     <li>Ability to work in an Agile environment.</li>
+// </ol>`,
 //         salary: 82000,
 //         date: 1729681667114,
 //         category: "Programming",

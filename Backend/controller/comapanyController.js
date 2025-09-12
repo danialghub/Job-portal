@@ -11,26 +11,34 @@ export const registerCompany = async (req, res) => {
     const { name, email, password } = req.body
 
     const imageFile = req.file
+    let imageUpload;
 
-    if (!name || !email || !password || !imageFile) {
+    if (!name || !email || !password) {
         return res.json({ success: false, message: "داده ها از دست رفته" })
     }
 
-
     try {
-        const companyExist = await User.findOne({ email })
-        if (companyExist) {
+        const isCompanyExist = await User.findOne({ email })
+        if (isCompanyExist) {
             return res.json({ success: false, message: "درحال حاضر این شرکت وجود دارد" })
         }
         const salt = await bcrypt.genSalt(10)
         const hashPasword = await bcrypt.hash(password, salt)
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path)
+
+        if (imageFile?.path) {
+            imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+                transformation: [
+                    { width: 500, crop: 'fill', gravity: 'face' },
+                    { quality: 'auto', fetch_format: "auto" }
+                ]
+            })
+        }
 
         const company = await Company.create({
             name,
             email,
             password: hashPasword,
-            image: imageUpload.secure_url
+            image: imageUpload?.secure_url || ""
         })
         res.json({
             success: true,
@@ -117,12 +125,11 @@ export const postJob = async (req, res) => {
 }
 //delete a job
 export const removeJobs = async (req, res) => {
-    console.log("hello");
 
     try {
         const { ids } = req.body
-        console.log(ids);
 
+        await JobApplication.deleteMany({ jobId: { $in: ids } })
         await Job.deleteMany({ _id: { $in: ids } })
 
         ids.length > 1
@@ -136,8 +143,6 @@ export const removeJobs = async (req, res) => {
 //update job
 export const UpdateJob = async (req, res) => {
     const { jobId, title, description, salary, location, level, category } = req.body
-
-    console.log(jobId);
 
     try {
         await Job.findByIdAndUpdate(jobId,

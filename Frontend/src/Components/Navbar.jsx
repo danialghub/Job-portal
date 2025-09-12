@@ -10,6 +10,7 @@ import { FaUser } from "react-icons/fa";
 import { MdOutlineLightMode } from "react-icons/md";
 
 const Navbar = ({ children }) => {
+    console.log("Navbar");
     const { openSignIn } = useClerk()
     const { user } = useUser()
     const navigate = useNavigate()
@@ -41,7 +42,7 @@ const Navbar = ({ children }) => {
 
                                         <img
                                             className='size-8 sm:size-10 scale-125 border rounded-full shadow-md'
-                                            src={companyData.image} alt="" />
+                                            src={companyData.image ? companyData.image : assets.avatar_icon} alt="" />
 
                                         <div className='hidden absolute group-hover:block top-0 left-0  sm:left-0 z-10 text-black rounded pt-12 '>
                                             <ul className='list-none m-0 p-2 bg-white rounded-md border text-sm shadow '>
@@ -51,8 +52,8 @@ const Navbar = ({ children }) => {
                                                 </li>
                                                 {children || <li className='py-2   cursor-pointer  pr-1 '>
 
-                                                    <Link to="/dashboard" 
-                                                    className='flex items-center gap-2'
+                                                    <Link to="/dashboard"
+                                                        className='flex items-center gap-2'
                                                     >
                                                         <HiOutlineViewGridAdd fontSize={19} />
                                                         داشبورد

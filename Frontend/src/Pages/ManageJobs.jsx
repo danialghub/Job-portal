@@ -8,6 +8,7 @@ import Loader from '../Components/Loading'
 import Pagination from '../Components/Pagination'
 
 const ManageJobs = () => {
+        console.log('ManageJobs');
   //set up for persian date
   moment.loadPersian({
     dialect: 'persian-modern',

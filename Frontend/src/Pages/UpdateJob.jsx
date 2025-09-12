@@ -6,6 +6,7 @@ import Loader from '../Components/Loading'
 import { toast } from 'react-toastify'
 
 const UpdateJob = () => {
+    console.log('UpdateJob');
     const { jobId } = useParams()
     const [jobData, setJobData] = useState(null)
 

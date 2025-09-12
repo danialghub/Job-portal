@@ -13,7 +13,7 @@ import { AnimatePresence } from 'framer-motion'
 import ApplicationRows from '../Components/ApplicationRows'
 const Applications = () => {
 
-
+console.log('Applications');
 
 
     const { user } = useUser()

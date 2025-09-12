@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 
 const JobForm = ({ job, state, jobId }) => {
+    console.log("Job form");
 
     const toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],

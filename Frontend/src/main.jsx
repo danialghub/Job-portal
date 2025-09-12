@@ -5,8 +5,7 @@ import AppContextProvider from './context/AppContext.jsx'
 import './index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
 import 'quill/dist/quill.snow.css'
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'react-image-crop/dist/ReactCrop.css'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 

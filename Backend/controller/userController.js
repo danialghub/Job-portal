@@ -76,7 +76,6 @@ export const updateUserResume = async (req, res) => {
     try {
         const userId = req.auth().userId
         const resumeFile = req.file
-        console.log(resumeFile);
 
         const userData = await User.findById(userId)
         if (resumeFile) {

@@ -12,6 +12,7 @@ const jobSchema = new mongoose.Schema({
     visible: { type: Boolean, default: true },
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Company', requred: true },
 })
+
 const Job = mongoose.model('Job', jobSchema, 'Job')
 
 export default Job

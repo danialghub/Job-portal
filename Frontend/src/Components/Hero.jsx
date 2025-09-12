@@ -15,8 +15,6 @@ const Hero = () => {
         })
         setIsSearched(true)
 
-
-
     }
 
     return (
@@ -24,7 +22,7 @@ const Hero = () => {
             <div className='bg-gradient-to-r from-purple-800 to-purple-950 py-16 text-center rounded-xl text-white'>
                 <div className='mb-8'>
                     <h2 className='text-2xl md:text-3xl lg:text-4xl font-medium mb-4'>بیش از 10 هزار نفر پذیرش</h2>
-                    <p className='text-sm max-w-xl mx-auto font-light px-5'>قدم بزرگ بعدی زندگی کاریت در اینجا آغاز میشود - بهترین موقیعت شغلی را پیدا کند و آیندتو بساز</p>
+                    <p className='text-sm max-w-xl mx-auto font-light px-5'>قدم بزرگ بعدی زندگی کاریت در اینجا آغاز میشود - بهترین موقعیت شغلی را پیدا کند و آیندتو بساز</p>
                 </div>
                 <div className='flex justify-between items-center max-w-xl  p-2 rounded bg-white mx-4 sm:mx-auto pl-4 text-gray-600 max-sm:text-sm max-sm:pl-2'>
                     <div className='flex items-center gap-1 '>

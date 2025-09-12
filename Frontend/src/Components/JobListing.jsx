@@ -6,7 +6,7 @@ import Pagination from './Pagination'
 import Loarder from './Loading'
 import { motion, AnimatePresence } from 'framer-motion'
 const JobListing = () => {
-
+    console.log("JobListing");
     const { isSearched, searchFilter, setSearchFilter, jobs } = useContext(AppContext)
 
     const [isShowedFilter, setIsShowedFilter] = useState(false)
@@ -18,6 +18,7 @@ const JobListing = () => {
     //handling checked inputs
     const handleCategories = job => {
         setSelectedCategories(prev => prev.includes(job) ? prev.filter(cat => cat !== job) : [...prev, job])
+
     }
     const handleLocations = location => {
         setSelectedLocations(prev => prev.includes(location) ? prev.filter(loc => loc !== location) : [...prev, location])
@@ -26,7 +27,6 @@ const JobListing = () => {
     useEffect(() => {
         if (jobs) {
             setFilteredJobs(jobs)
-
             const matchedCategories = job => !seletedCategories.length || seletedCategories.includes(job.category)
 
             const matchedLocations = job => !seletedLocations.length || seletedLocations.includes(job.location)
@@ -141,8 +141,8 @@ const JobListing = () => {
                 :
 
                 <section className=' w-full lg-w-3/4 text-gray-800 max-lg:px-4 flex flex-col justify-between min-h-[90vh] lg:min-h-[75vh] 2xl:min-h-[100vh] ' id='job_list'>
-                    <h3 className='font-medium text-3xl py-2'>موقعیت  شغلی های اخیر</h3>
-                    <p className='mb-8'>کاری که مورد علاقه ات است را به بهترین شرکت درخواست بده</p>
+                    <h3 className='font-medium text-3xl py-2'>موقعیت های شغلی اخیر</h3>
+                    <p className='mb-8 '>کاری که مورد علاقه ات است را ، به معتبرترین شرکت درخواست بده</p>
 
 
                     <motion.div

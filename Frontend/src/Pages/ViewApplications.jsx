@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
 
 const ViewApplications = () => {
-
+  console.log('ViewApplications');
   const { companyToken } = useContext(AppContext)
   const [applicants, setApplicants] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -98,14 +98,14 @@ const ViewApplications = () => {
                       ? (<div className='flex items-center gap-1'>
 
                         <button
-                        onClick={()=> changeJobApplicationStatus(data._id , 'قبول شده')}
-                        className=' px-2 py-1 rounded bg-green-100 '>
+                          onClick={() => changeJobApplicationStatus(data._id, 'قبول شده')}
+                          className=' px-2 py-1 rounded bg-green-100 '>
                           <IoMdCheckmark fontSize={20} className='text-green-500' />
                         </button>
 
                         <button
-                        onClick={()=> changeJobApplicationStatus(data._id , 'رد شده')}
-                        className='px-2 py-1 rounded bg-red-100 '>
+                          onClick={() => changeJobApplicationStatus(data._id, 'رد شده')}
+                          className='px-2 py-1 rounded bg-red-100 '>
                           <IoMdClose fontSize={20} className='text-red-500' />
                         </button>
 

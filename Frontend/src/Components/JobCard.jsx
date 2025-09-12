@@ -4,15 +4,15 @@ import { motion } from 'framer-motion'
 const JobCard = ({ _id, location, title, level, description, companyId }) => {
     const navigate = useNavigate()
     return (
-        <motion.div 
-        animate={{opacity:1}}
-        initial={{opacity:0}}
-        exit={{opacity:0}}
-        layout
-         className='border shadow rounded p-6'>
+        <motion.div
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            exit={{ opacity: 0 }}
+            layout
+            className='border shadow rounded p-6'>
             <div>
                 <div className='flex justify-between items-center'>
-                    <img className='h-8' src={companyId.image} alt="" />
+                    <img className='h-8' src={companyId.image ? companyId.image : assets.company_place_holder} alt="" />
                 </div>
                 <h3 className='font-medium text-xl mt-2'>{title}</h3>
                 <div className='flex items-center gap-3 mt-2 text-xs'>

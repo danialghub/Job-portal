@@ -16,7 +16,6 @@ import { toast } from 'react-toastify'
 import { useAuth } from '@clerk/clerk-react'
 
 const ApplyJob = () => {
-
   const { id } = useParams()
   const { jobs, userData, userApplications, fetchUserApplications } = useContext(AppContext)
 
@@ -105,7 +104,7 @@ const ApplyJob = () => {
           <div className='flex flex-col md:flex-row gap-8  items-center '>
 
             <img
-              src={jobData.companyId.image}
+              src={jobData.companyId.image ? jobData.companyId.image : assets.company_place_holder}
               alt=""
               className='size-24 rounded-lg p-4   bg-white flex items-center justify-center'
             />

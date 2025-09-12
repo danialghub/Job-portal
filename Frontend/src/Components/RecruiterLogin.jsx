@@ -6,6 +6,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const RecruiterLogin = () => {
+    console.log('RecruiterLogin');
     const navigate = useNavigate()
     const [state, setState] = useState('ورود')
 

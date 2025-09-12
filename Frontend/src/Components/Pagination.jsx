@@ -1,6 +1,10 @@
+import { memo } from "react";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 
-const Pagination = ({ list, page, setPage, perPage }) => {
+const Pagination = memo(({ list, page, setPage, perPage }) => {
+
+console.log('Pagination');
+
     return (
         <div className='flex justify-center items-center gap-1 mt-10  '>
             <a
@@ -32,5 +36,5 @@ const Pagination = ({ list, page, setPage, perPage }) => {
 
     )
 }
-
+)
 export default Pagination

@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import moment from 'moment-jalaali'
+import { assets } from '../assets/assets';
 
 const ApplicationRows = ({ job, idx }) => {
     //framer motion varients
@@ -29,11 +30,11 @@ const ApplicationRows = ({ job, idx }) => {
             exit={{ opacity: 0, height: 0, padding: 0 }}
             variants={variants}
             custom={idx}
-            >
+        >
             <motion.td className='px-4 py-2 flex items-center gap-2 border-b'>
                 <img
                     className='w-8 h-8'
-                    src={job.companyId.image} alt="" />
+                    src={job.companyId.image ? job.companyId.image : assets.company_place_holder} alt="" />
                 {job.companyId.name}
             </motion.td>
             <motion.td className='px-4 py-2 border-b'>{job.jobId.title}</motion.td>
