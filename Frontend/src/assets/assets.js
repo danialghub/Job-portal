@@ -36,6 +36,8 @@ import amazon_logo from './amazon_logo.png'
 import dlLogo from './dlLogo.png'
 import avatar_icon from './avatar_icon.png'
 import company_place_holder from './company-place-holder.jpg'
+import profile_icon from './profile.png'
+
 export const assets = {
     logo,
     search_icon,
@@ -74,7 +76,8 @@ export const assets = {
     amazon_logo,
     dlLogo,
     avatar_icon,
-    company_place_holder
+    company_place_holder,
+    profile_icon
 }
 
 export const JobCategories = [

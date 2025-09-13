@@ -5,7 +5,6 @@ import Footer from '../Components/Footer'
 
 const Home = () => {
 
-        console.log('Home');
 
     return (
         <div>

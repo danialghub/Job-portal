@@ -10,9 +10,10 @@ import { AppContext } from './context/AppContext'
 import { useRoutes } from 'react-router-dom'
 import UpdateJob from './Pages/UpdateJob'
 import CompanyProfile from './Pages/CompanyProfile'
+import Loader from './Components/Loading'
 
 const AppRoutes = () => {
-    const { companyToken, userData } = useContext(AppContext)
+    const { companyToken, userData, companyData } = useContext(AppContext)
 
     const routes = [
         {
@@ -49,7 +50,7 @@ const AppRoutes = () => {
                 },
                 {
                     path: 'profile',
-                    element: <CompanyProfile />
+                    element: companyData ? <CompanyProfile /> : <Loader />
                 },
             ] : [{
                 path: "*", element:

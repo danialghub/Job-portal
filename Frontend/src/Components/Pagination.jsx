@@ -3,7 +3,7 @@ import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 
 const Pagination = memo(({ list, page, setPage, perPage }) => {
 
-console.log('Pagination');
+
 
     return (
         <div className='flex justify-center items-center gap-1 mt-10  '>

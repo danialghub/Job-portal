@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 import Loader from '../Components/Loading'
@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { IoMdClose, IoMdCheckmark } from "react-icons/io";
 
 const ViewApplications = () => {
-  console.log('ViewApplications');
+
   const { companyToken } = useContext(AppContext)
   const [applicants, setApplicants] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)

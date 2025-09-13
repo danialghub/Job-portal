@@ -136,7 +136,8 @@ const AppContextProvider = ({ children }) => {
         userApplications, setUserApplications,
         fetchUsersData,
         fetchUserApplications,
-        logoutHandler
+        logoutHandler,
+        fetchCompanyData
 
     }
 

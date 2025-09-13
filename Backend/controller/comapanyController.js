@@ -67,7 +67,6 @@ export const loginCompany = async (req, res) => {
         if (!company.email) {
             return res.json({ success: false, message: "شرکت نامعتبر است" })
         }
-        console.log(await bcrypt.compare(password, company.password));
         const isPassMatch = await bcrypt.compare(password, company.password)
 
         if (isPassMatch) {
@@ -86,6 +85,49 @@ export const loginCompany = async (req, res) => {
         }
     } catch (error) {
         res.json({ success: false, message: error.message })
+    }
+}
+//update Company Profiel
+export const updateCompany = async (req, res) => {
+    try {
+
+        const { name, password, newPassword } = req.body
+
+        if (!name || !password || !newPassword) {
+            return res.json({ success: false, message: "داده ها از دست رفته" })
+        }
+
+
+        const imageFile = req.file
+        const companyId = req.company._id
+        let imageUpload = '';
+
+        if (imageFile?.path) {
+            imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+                transformation: [
+                    { width: 500, crop: 'fill', gravity: 'face' },
+                    { quality: 'auto', fetch_format: "auto" }
+                ]
+            })
+            
+        }
+
+        const company = await Company.findOne({ _id: companyId })
+
+        if (!password === company.password)
+            return res.json({ success: false, message: "رمز عبور اشتباه است" })
+
+
+        const salt = await bcrypt.genSalt(10)
+        const hashPasword = await bcrypt.hash(newPassword, salt)
+
+        await Company.updateOne({ _id: companyId }, { name, password: hashPasword, image: imageUpload.secure_url })
+
+        res.json({ success: true, message: "اطلاعات با موفقیت بروز گردید" })
+
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+
     }
 }
 //Get company data

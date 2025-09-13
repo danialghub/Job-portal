@@ -11,8 +11,8 @@ const JobCard = ({ _id, location, title, level, description, companyId }) => {
             layout
             className='border shadow rounded p-6'>
             <div>
-                <div className='flex justify-between items-center'>
-                    <img className='h-8' src={companyId.image ? companyId.image : assets.company_place_holder} alt="" />
+                <div className='flex justify-between items-center '>
+                    <img className='h-9 w-10 rounded-full' src={companyId.image ? companyId.image : assets.company_place_holder} alt="" />
                 </div>
                 <h3 className='font-medium text-xl mt-2'>{title}</h3>
                 <div className='flex items-center gap-3 mt-2 text-xs'>

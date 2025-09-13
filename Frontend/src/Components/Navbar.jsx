@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import  { useContext } from 'react'
 import { assets } from '../assets/assets'
 import { useUser, useClerk, UserButton } from '@clerk/clerk-react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { FaUser } from "react-icons/fa";
 import { MdOutlineLightMode } from "react-icons/md";
 
 const Navbar = ({ children }) => {
-    console.log("Navbar");
+
     const { openSignIn } = useClerk()
     const { user } = useUser()
     const navigate = useNavigate()
