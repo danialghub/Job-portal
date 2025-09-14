@@ -9,11 +9,11 @@ export default function CompanyProfile() {
 
     const { companyData, fetchCompanyData } = useContext(AppContext)
 
-    const [name, setName] = useState(companyData?.name || '')
+    const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [avatarFile, setAvatarFile] = useState(null)
-    const [avatarUrl, setAvatarUrl] = useState(companyData.image)
+    const [avatarUrl, setAvatarUrl] = useState(null)
 
 
     // cropping/panning/zoom state
@@ -87,8 +87,8 @@ export default function CompanyProfile() {
                 setNewPassword('')
                 setAvatarFile(null)
                 setAvatarUrl(null)
-            } 
-            
+            }
+
         } catch (error) {
             toast.error(error.message)
         }
@@ -123,7 +123,7 @@ export default function CompanyProfile() {
                                     <User size={16} className="text-white/70" />
                                     <input
                                         required
-                                        value={name}
+                                        value={name || companyData?.name}
                                         onChange={e => setName(e.target.value)} placeholder="Your full name" className="bg-transparent outline-none text-white placeholder-white/40 w-full" />
                                 </div>
                             </div>
@@ -189,7 +189,7 @@ export default function CompanyProfile() {
                                 >
                                     {avatarUrl ? (
                                         <img
-                                            src={avatarUrl}
+                                            src={avatarUrl || companyData.image}
                                             alt="avatar"
                                             draggable={false}
                                             style={{

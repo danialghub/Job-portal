@@ -93,7 +93,7 @@ export const updateCompany = async (req, res) => {
 
         const { name, password, newPassword } = req.body
 
-        if (!name || (!password && !newPassword)) {
+        if (!name && (!password || !newPassword)) {
             return res.json({ success: false })
         }
 
