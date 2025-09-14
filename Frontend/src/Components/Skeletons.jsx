@@ -75,7 +75,7 @@ const Skeletons = () => {
                     </div>
                     <div className='w-full lg:w-1/3 mt-8 lg:mt-0 lg:ml-8 flex flex-col '>
 
-                        <h2>کارهای دیگر شرکت </h2>
+                       
                         <Skeleton />
                         <Stack spacing={2} marginTop={7}>
 
