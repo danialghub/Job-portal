@@ -18,7 +18,7 @@ const Skeletons = () => {
                         <Skeleton width={75} height={96} />
 
                         <div className='text-center md:text-right text-neutral-700'>
-                            <Skeleton height={40}/>
+                            <Skeleton height={40} />
 
                             <div className='grid max-sm:grid-cols-2 sm:grid-flow-col max-sm:gap-y-3  gap-x-3 mt-2 sm:gap-x-5 text-gray-600  text-sm h-6 '>
                                 <span className="flex  gap-1 items-center">
@@ -56,7 +56,10 @@ const Skeletons = () => {
                     <div className='w-full lg:w-2/4 flex flex-col gap-4'>
 
                         <Skeleton height={60} />
-
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
                         <div className='flex flex-col gap-2'>
                             <Skeleton height={50} />
                             <div className='flex flex-col gap-1'>
@@ -75,22 +78,22 @@ const Skeletons = () => {
                     </div>
                     <div className='w-full lg:w-1/3 mt-8 lg:mt-0 lg:ml-8 flex flex-col '>
 
-                       
+
                         <Skeleton />
                         <Stack spacing={2} marginTop={7}>
 
                             <Skeleton
-                              
+
                                 width={400}
-                                height={200} 
+                                height={200}
                                 variant='rectangular'
-                                />
+                            />
                             <Skeleton
-                          variant='rectangular'
+                                variant='rectangular'
                                 width={400}
                                 height={200} />
                             <Skeleton
-                               variant='rectangular'
+                                variant='rectangular'
                                 width={400}
                                 height={200} />
                             <Skeleton
