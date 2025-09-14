@@ -13,7 +13,7 @@ import moment from 'moment/min/moment-with-locales'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useAuth } from '@clerk/clerk-react'
-import Skletons from '../Components/Skletons'
+import Skletons from '../Components/Skeletons'
 
 const ApplyJob = () => {
   const { id } = useParams()
