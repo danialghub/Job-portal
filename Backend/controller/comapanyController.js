@@ -93,8 +93,8 @@ export const updateCompany = async (req, res) => {
 
         const { name, password, newPassword } = req.body
 
-        if (!name || !password || !newPassword) {
-            return res.json({ success: false, message: "داده ها از دست رفته" })
+        if (!name || (!password && !newPassword)) {
+            return res.json({ success: false })
         }
 
 
@@ -109,19 +109,25 @@ export const updateCompany = async (req, res) => {
                     { quality: 'auto', fetch_format: "auto" }
                 ]
             })
-            
+
         }
 
         const company = await Company.findOne({ _id: companyId })
 
-        if (!password === company.password)
-            return res.json({ success: false, message: "رمز عبور اشتباه است" })
+        if (password && newPassword) {
 
+            if (!password === company.password)
+                return res.json({ success: false, message: "رمز عبور اشتباه است" })
 
-        const salt = await bcrypt.genSalt(10)
-        const hashPasword = await bcrypt.hash(newPassword, salt)
+            const salt = await bcrypt.genSalt(10)
+            const hashPasword = await bcrypt.hash(newPassword, salt)
 
-        await Company.updateOne({ _id: companyId }, { name, password: hashPasword, image: imageUpload.secure_url })
+            await Company.updateOne({ _id: companyId }, { name, password: hashPasword, image: imageUpload.secure_url })
+
+        } else {
+            await Company.updateOne({ _id: companyId }, { name, image: imageUpload.secure_url })
+        }
+
 
         res.json({ success: true, message: "اطلاعات با موفقیت بروز گردید" })
 

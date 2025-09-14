@@ -56,10 +56,12 @@ const Skeletons = () => {
                     <div className='w-full lg:w-2/4 flex flex-col gap-4'>
 
                         <Skeleton height={60} />
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
+                        <Stack spacing={2}>
+                            <Skeleton />
+                            <Skeleton />
+                            <Skeleton />
+                            <Skeleton />
+                        </Stack>
                         <div className='flex flex-col gap-2'>
                             <Skeleton height={50} />
                             <div className='flex flex-col gap-1'>

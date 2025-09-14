@@ -87,9 +87,8 @@ export default function CompanyProfile() {
                 setNewPassword('')
                 setAvatarFile(null)
                 setAvatarUrl(null)
-            } else {
-                toast.error(data.message)
-            }
+            } 
+            
         } catch (error) {
             toast.error(error.message)
         }
