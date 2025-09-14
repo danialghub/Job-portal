@@ -13,7 +13,7 @@ export default function CompanyProfile() {
     const [password, setPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [avatarFile, setAvatarFile] = useState(null)
-    const [avatarUrl, setAvatarUrl] = useState(null)
+    const [avatarUrl, setAvatarUrl] = useState('')
 
 
     // cropping/panning/zoom state
