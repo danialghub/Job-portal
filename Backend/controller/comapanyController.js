@@ -89,50 +89,60 @@ export const loginCompany = async (req, res) => {
 }
 //update Company Profiel
 export const updateCompany = async (req, res) => {
+    let errors = []
     try {
 
         const { name, password, newPassword } = req.body
+        let updatedCompany = {}
+        const companyId = req.company._id
 
-        if (!name && (!password || !newPassword)) {
+
+        if (!name && (!password || !newPassword) && newPassword === password) {
             return res.json({ success: false })
         }
 
 
-        const imageFile = req.file
-        const companyId = req.company._id
-        let imageUpload = '';
 
-        if (imageFile?.path) {
-            imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+        name !== req.company.name ? updatedCompany["name"] = name : null
+
+        req.file?.path ? updatedCompany["image"] = await cloudinary.uploader.upload(req.file.path,
+            {
                 transformation: [
                     { width: 500, crop: 'fill', gravity: 'face' },
                     { quality: 'auto', fetch_format: "auto" }
                 ]
-            })
+            }) : null
 
-        }
 
-        const company = await Company.findOne({ _id: companyId })
+        //update password , if there is a password
+
 
         if (password && newPassword) {
 
-            if (!password === company.password)
-                return res.json({ success: false, message: "رمز عبور اشتباه است" })
+            const company = await Company.findOne({ _id: companyId }).select('password')
+
+            const isPass = await bcrypt.compare(password, company.password)
+            if (!isPass) {
+                errors.push("رمز عبور اشتباه است")
+                return res.json({ success: false, message: errors })
+            }
 
             const salt = await bcrypt.genSalt(10)
-            const hashPasword = await bcrypt.hash(newPassword, salt)
+            updatedCompany['password'] = await bcrypt.hash(newPassword, salt)
 
-            await Company.updateOne({ _id: companyId }, { name, password: hashPasword, image: imageUpload.secure_url })
+        } else if (password || newPassword) errors.push("هم پسورد فعلی هم پسورد جدید باید مقدار دهی شود")
 
-        } else {
-            await Company.updateOne({ _id: companyId }, { name, image: imageUpload.secure_url })
+        if (Object.keys(updatedCompany).length) await Company.updateOne({ _id: companyId }, { ...updatedCompany })
+        else {
+            errors.push("مقادیر تکراری هستند")
+            return res.json({ success: false, message: errors })
         }
-
 
         res.json({ success: true, message: "اطلاعات با موفقیت بروز گردید" })
 
     } catch (error) {
-        res.json({ success: false, message: error.message })
+        errors.push(errors.message)
+        res.json({ success: false, message: errors })
 
     }
 }
