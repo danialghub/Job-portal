@@ -9,11 +9,11 @@ import Loading from '../Components/Loading'
 import { assets } from '../assets/assets'
 import moment from 'moment/min/moment-with-locales'
 
-
 // import  from 'moment-jalaali'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useAuth } from '@clerk/clerk-react'
+import Skletons from '../Components/Skletons'
 
 const ApplyJob = () => {
   const { id } = useParams()
@@ -93,7 +93,7 @@ const ApplyJob = () => {
   }, [id, jobData, userApplications])
 
 
-  return jobData ? (
+  return jobData  ? (
     <>
       <Navbar />
 
@@ -103,6 +103,7 @@ const ApplyJob = () => {
         <div className='rounded-xl text-black  w-full flex justify-center flex-wrap  md:justify-between gap-8 py-16 px-14 sm:py-20 mb-6 bg-sky-50 border border-sky-400 '>
           <div className='flex flex-col md:flex-row gap-8  items-center '>
 
+
             <img
               src={jobData.companyId.image ? jobData.companyId.image : assets.company_place_holder}
               alt=""
@@ -110,7 +111,8 @@ const ApplyJob = () => {
             />
 
             <div className='text-center md:text-right text-neutral-700'>
-              <h3 className='text-2xl sm:text-4xl mb-4 font-medium'>{jobData.title}</h3>
+              <h3 className='text-2xl sm:text-4xl mb-4 font-medium'>{jobData.title} </h3>
+
               <div className='grid max-sm:grid-cols-2 sm:grid-flow-col max-sm:gap-y-3  gap-x-3 sm:gap-x-5 text-gray-600  text-sm h-6 '>
                 <span className="flex  gap-1 items-center">
                   <img src={assets.suitcase_icon} alt="" />
@@ -177,9 +179,8 @@ const ApplyJob = () => {
 
       <Footer />
     </>
-  ) : (
-    <Loading />
-  )
+  ) : <Skletons />
+
 }
 
 export default ApplyJob
