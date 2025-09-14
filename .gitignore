@@ -2,3 +2,5 @@ node_modules
 note.txt
 .env
 RichText.jsx
+/build
+/dist
