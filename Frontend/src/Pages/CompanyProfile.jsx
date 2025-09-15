@@ -80,6 +80,8 @@ export default function CompanyProfile() {
 
 
             const { data } = await axios.post('/api/company/update-profile', form)
+            console.log(data);
+            
             if (data.success) {
                 toast.success(data.message)
                 fetchCompanyData()
@@ -192,7 +194,7 @@ export default function CompanyProfile() {
                                 >
                                     {avatarUrl || companyData.image ? (
                                         <img
-                                            src={companyData.image}
+                                            src={companyData.image || avatarUrl}
                                             alt="avatar"
                                             draggable={false}
                                             style={{

@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+
 
 // OTPInput - a 4-digit OTP input component with Tailwind styling
 // Features:
@@ -10,23 +12,56 @@ import React, { useEffect, useRef, useState } from "react";
 
 export default function OTP({
     length = 4,
-    onComplete = (code) => { },
+    register,
     className = "",
+    expiresTime,
 }) {
+
     const [values, setValues] = useState(() => Array(length).fill(""));
+    const [timeLeft, setTimeLeft] = useState(
+        Math.floor((new Date(expiresTime) - new Date()) / 1000)
+    )
     const inputsRef = useRef([]);
+
+    const checkingInput = () => {
+        if (values.every((v) => v !== "")) {
+            inputsRef.current.map((inp, idx) => {
+                setTimeout(() => {
+                    inp.className += ' ring-2 ring-green-500 focus:ring-green-500 '
+                }, (100 + (idx + 1) ** 4));
+            })
+
+        } else {
+            inputsRef.current.map((inp) => {
+                if (inp.className.includes(' ring-2 ring-green-500 focus:ring-green-500 '))
+                    inp.className = inp.className.replace(' ring-2 ring-green-500 focus:ring-green-500 ', "")
+            })
+
+        }
+    }
 
     useEffect(() => {
         // focus first input on mount
         if (inputsRef.current[0]) inputsRef.current[0].focus();
-    }, []);
+
+
+        if (timeLeft <= 0) return
+
+        const interval = setInterval(() => {
+            setTimeLeft(prev => prev - 1)
+        }, 1000);
+
+        return () => clearInterval(interval)
+
+
+
+
+    }, [timeLeft]);
 
     useEffect(() => {
-        // if all filled, call onComplete with combined code
-        if (values.every((v) => v !== "")) {
-            onComplete(values.join(""));
-        }
-    }, [values, onComplete]);
+        checkingInput()
+
+    }, [values]);
 
     function focusInput(idx) {
         const ref = inputsRef.current[idx];
@@ -111,27 +146,40 @@ export default function OTP({
         });
     }
 
+
     return (
-        <div 
-        dir="ltr"
-        className={`flex gap-4 justify-center items-center ${className}`}>
-            {Array.from({ length }).map((_, i) => (
-                <input
-                    key={i}
-                    ref={(el) => (inputsRef.current[i] = el)}
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="one-time-code"
-                    pattern="[0-9]*"
-                    maxLength={1}
-                    value={values[i]}
-                    onChange={(e) => handleChange(e, i)}
-                    onKeyDown={(e) => handleKeyDown(e, i)}
-                    onPaste={(e) => handlePaste(e, i)}
-                    aria-label={`OTP digit ${i + 1}`}
-                    className={`size-12 rounded-lg text-center text-xl font-medium border-2 border-gray-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-shadow`}
-                />
-            ))}
-        </div>
+        <form dir="ltr" className="flex flex-col gap-8" onSubmit={e => register(e, values)}>
+
+            <h3 className="text-center  text-xl  font-bold text-black/60"> OTP احراز هویت </h3>
+            <div
+
+                className={`flex gap-4 justify-center items-center ${className}`}>
+                {Array.from({ length }).map((_, i) => (
+                    <input
+                        key={i}
+                        ref={(el) => (inputsRef.current[i] = el)}
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        pattern="[0-9]*"
+                        maxLength={1}
+                        value={values[i]}
+                        onChange={(e) => handleChange(e, i)}
+                        onKeyDown={(e) => handleKeyDown(e, i)}
+                        onPaste={(e) => handlePaste(e, i)}
+                        aria-label={`OTP digit ${i + 1}`}
+                        className={`size-12 rounded-lg text-center text-xl font-medium border-2 border-gray-200 focus:border-blue-400 focus:outline-none focus:ring-2  focus:ring-blue-200 transition-shadow`}
+                    />
+                ))}
+            </div>
+
+            <div className="flex flex-col gap-3  items-end">
+                {/* <button className="cursor-pointer">ارسال مجدد کد</button> */}
+                <p className="text-md tracking-widest ">{timeLeft}</p>
+                <button
+                    type="submit"
+                    className="text-lg w-full py-1 border-4 border-blue-100 text-blue-500 rounded-md cursor-pointer ">تایید</button>
+            </div>
+        </form>
     );
 }

@@ -20,16 +20,16 @@ const RecruiterLogin = () => {
 
     const [isTextDataSubmited, setIsTextDataSubmited] = useState(false)
     const [emailVerification, setEmailVerfication] = useState(false)
+    const [leftTime, setLeftTime] = useState(null)
+
     const { setShowRecruiterLogin, setCompanyToken, setCompanyData } = useContext(AppContext)
 
 
 
-    const onSubmit = async (e) => {
+    const preRegister = async (e) => {
         e.preventDefault()
         if (state == "ثبت نام" && !isTextDataSubmited) {
             return setIsTextDataSubmited(true)
-        } else if (state == "ثبت نام" && !emailVerification) {
-            setEmailVerfication(true)
         }
         try {
 
@@ -47,22 +47,17 @@ const RecruiterLogin = () => {
                 } else {
                     toast.error("ایمیل یا رمزعبور نامعتبر است!")
                 }
-            } else if (emailVerification) {
+            } else {
                 const formData = new FormData()
                 formData.append('name', name)
                 formData.append('email', email)
                 formData.append('password', password)
                 formData.append('image', image)
 
-                const { data } = await axios.post("/api/company/register", formData)
+                const { data } = await axios.post("/api/company/pre-register", formData)
                 if (data.success) {
-                    setCompanyData(data.company)
-                    setCompanyToken(data.token)
-                    axios.defaults.headers.common['token'] = data.token
-                    localStorage.setItem('companyToken', data.token)
-                    setShowRecruiterLogin(false)
-                    navigate('/dashboard')
-                    toast.success("حساب شما با موفقیت ایجاد شد")
+                    setEmailVerfication(true)
+                    setLeftTime(data.expiresAt)
 
                 } else {
                     toast.error(data.message)
@@ -73,24 +68,55 @@ const RecruiterLogin = () => {
             toast.error(error.message)
         }
     }
+    const register = async (e, code) => {
+        e.preventDefault()
+
+        try {
+            if (code.length == 4) {
+
+                const { data } = await axios.post('/api/company/register', { email },
+                    { headers: { code: code.join('') } }
+                )
+                if (data.success) {
+                    setCompanyData(data.company)
+                    setCompanyToken(data.token)
+                    setShowRecruiterLogin(false)
+                    axios.defaults.headers.common['token'] = data.token
+                    localStorage.setItem('companyToken', data.token)
+                    navigate('/dashboard')
+                    toast.success("حساب شما با موفقیت ایجاد شد")
+                } else {
+                    toast.error(data.message)
+                }
+            }
+
+        } catch (error) {
+            toast.error(error.message)
+        }
+
+    }
 
     useEffect(() => {
         document.body.style.overflow = "hidden"
+        scrollTo(0, 0)
         return () => {
             document.body.style.overflow = "unset"
         }
     }, [])
+
     return (
         <AnimatePresence>
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35 }}
-                className='absolute top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center'>
-                <div className='bg-white p-10 rounded-xl text-slate-500 relative'>
-                    {/* {emailVerification ? */}
+            <div
+
+                className='absolute top-0 left-0 right-0 bottom-0  z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center'>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.50 }}
+                    className='bg-white p-10 rounded-xl text-slate-500 relative'>
+                    {!emailVerification ?
                         <form
-                            onSubmit={onSubmit}
+                            onSubmit={preRegister}
                         >
                             <h1 className='text-center text-neutral-700 font-medium text-2xl'> {state}</h1>
                             <p className='text-sm my-2'>خوش برگشتید! لطفا برای ادامه وارد شوید</p>
@@ -169,11 +195,11 @@ const RecruiterLogin = () => {
                                 src={assets.cross_icon}
                                 alt="" />
                         </form>
-                        {/* : <OTP /> */}
+                        : <OTP expiresTime={leftTime} register={register} />
 
-                    {/* } */}
-                </div>
-            </motion.div>
+                    }
+                </motion.div>
+            </div>
         </AnimatePresence>
     )
 }

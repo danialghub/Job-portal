@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <title>کد تایید شما</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Vazirmatn:wght@100..900&display=swap');
+
+        * {
+            font-family: "Vazirmatn", sans-serif;
+        }
+    </style>
+
+
+</head>
+
+<body style="background-color:#f4f6f9; margin:0; padding:0; direction: rtl; text-align: center; width: 100%;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
+        style="max-width:600px; margin:auto; background:#ffffff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+        <tr>
+            <td style="padding: 30px 20px;">
+                <h2 style="color:#333; margin-bottom: 20px;"> کد تأیید ورود شما <br> به سایت کاریابی</h2>
+                <p style="color:#555; font-size:15px; margin-bottom:30px;">
+                    برای تکمیل ورود به حساب کاربری، کد زیر را وارد کنید:
+                </p>
+                <div
+                    style="display:inline-block; padding:15px 25px; background:#4f46e5; color:#fff; font-size:28px; font-weight:bold; letter-spacing:5px; border-radius:8px;">
+                    {{OTP_CODE}}
+                </div>
+                <p style="color:#777; font-size:14px; margin-top:30px;">
+                    این کد تا <b>2 دقیقه</b> آینده معتبر است.
+                </p>
+                <hr style="margin:30px 0; border:none; border-top:1px solid #eee;">
+                <p style="color:#aaa; font-size:13px;">
+                    اگر شما این درخواست را انجام نداده‌اید، لطفاً این پیام را نادیده بگیرید.
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
