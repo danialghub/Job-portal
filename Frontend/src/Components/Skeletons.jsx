@@ -7,7 +7,7 @@ const Skeletons = () => {
 
 
     return (
-        <div className='dark:bg-slate-950 min-h-screen container'>
+        <div className='dark:bg-slate-950 min-h-screen container min-w-full'>
             <Navbar />
 
             {/*main contents*/}
