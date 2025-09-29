@@ -20,7 +20,7 @@ const ThemeToggle = () => {
             className={`relative w-16 h-7 sm:w-20 sm:h-9 flex items-center
         bg-white/30 dark:bg-slate-800/60
         backdrop-blur-xl border border-white/20
-        rounded-full px-1 transition-all duration-500`}
+        rounded-full  transition-all duration-500`}
             dir="rtl"
         >
             <div
