@@ -55,7 +55,6 @@ export const getUserJobApplications = async (req, res) => {
     try {
 
         const userId = req.auth().userId
-        console.log(userId);
 
         const application = await JobApplication.find({ userId })
             .populate('companyId', 'name email image')

@@ -3,7 +3,7 @@ import JobForm from '../Components/JobForm'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import Loader from '../Components/Loading'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 
 const UpdateJob = () => {
     const { jobId } = useParams()

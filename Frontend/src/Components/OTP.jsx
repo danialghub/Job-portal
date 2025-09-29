@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import { assets } from "../assets/assets";
 
 
 // OTPInput - a 4-digit OTP input component with Tailwind styling
@@ -12,15 +12,14 @@ import { useEffect, useRef, useState } from "react";
 
 export default function OTP({
     length = 4,
-    register,
-    className = "",
+    registerHandler,
     expiresTime,
+    reSendOtp,
+    setEmailVerfication,
+    error
 }) {
 
     const [values, setValues] = useState(() => Array(length).fill(""));
-    const [timeLeft, setTimeLeft] = useState(
-        Math.floor((new Date(expiresTime) - new Date()) / 1000)
-    )
     const inputsRef = useRef([]);
 
     const checkingInput = () => {
@@ -40,28 +39,16 @@ export default function OTP({
         }
     }
 
-    useEffect(() => {
-        // focus first input on mount
-        if (inputsRef.current[0]) inputsRef.current[0].focus();
-
-
-        if (timeLeft <= 0) return
-
-        const interval = setInterval(() => {
-            setTimeLeft(prev => prev - 1)
-        }, 1000);
-
-        return () => clearInterval(interval)
-
-
-
-
-    }, [timeLeft]);
 
     useEffect(() => {
         checkingInput()
 
     }, [values]);
+
+    useEffect(() => {
+        // focus first input on mount
+        if (inputsRef.current[0]) inputsRef.current[0].focus();
+    }, [])
 
     function focusInput(idx) {
         const ref = inputsRef.current[idx];
@@ -148,38 +135,82 @@ export default function OTP({
 
 
     return (
-        <form dir="ltr" className="flex flex-col gap-8" onSubmit={e => register(e, values)}>
+        <form
+            dir="ltr"
+            className="flex flex-col gap-8"
+            onSubmit={(e) => registerHandler(e, values)}
+        >
+            {/* Back Button */}
+            <img
+                onClick={() => setEmailVerfication(false)}
+                src={assets.back_arrow_icon}
+                className="absolute top-5 left-5 cursor-pointer invert dark:invert-0 "
+                alt="بازگشت"
+            />
 
-            <h3 className="text-center  text-xl  font-bold text-black/60"> OTP احراز هویت </h3>
-            <div
+            {/* Title */}
+            <h3 className="text-center text-xl font-bold text-slate-700 dark:text-slate-200">
+                OTP احراز هویت
+            </h3>
 
-                className={`flex gap-4 justify-center items-center ${className}`}>
+            {/* OTP Inputs */}
+            <div className="flex gap-4 justify-center items-center">
                 {Array.from({ length }).map((_, i) => (
                     <input
                         key={i}
                         ref={(el) => (inputsRef.current[i] = el)}
                         type="text"
                         inputMode="numeric"
-                        autoComplete="one-time-code"
-                        pattern="[0-9]*"
                         maxLength={1}
                         value={values[i]}
                         onChange={(e) => handleChange(e, i)}
                         onKeyDown={(e) => handleKeyDown(e, i)}
                         onPaste={(e) => handlePaste(e, i)}
-                        aria-label={`OTP digit ${i + 1}`}
-                        className={`size-12 rounded-lg text-center text-xl font-medium border-2 border-gray-200 focus:border-blue-400 focus:outline-none focus:ring-2  focus:ring-blue-200 transition-shadow`}
+                        className={`
+            size-12 rounded-lg text-center text-xl font-medium
+            border-2 
+            ${error ? " animate-shake" : "border-gray-200 dark:border-gray-600"} 
+            bg-white dark:bg-slate-800 
+            text-slate-800 dark:text-slate-100
+            focus:border-blue-400 focus:outline-none
+            focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-500
+            transition-all
+          `}
                     />
                 ))}
             </div>
 
-            <div className="flex flex-col gap-3  items-end">
-                {/* <button className="cursor-pointer">ارسال مجدد کد</button> */}
-                <p className="text-md tracking-widest ">{timeLeft}</p>
+            {/* Actions */}
+            <div className="flex flex-col gap-3 items-end">
+                {expiresTime.leftTime <= 0 ? (
+                    <button
+                        onClick={reSendOtp}
+                        type="button"
+                        className="cursor-pointer text-blue-600 dark:text-blue-400 hover:underline mb-1"
+                    >
+                        ارسال مجدد کد
+                    </button>
+                ) : (
+                    <p className="text-md tracking-widest text-slate-700 dark:text-slate-300">
+                        {expiresTime.handler()}
+                    </p>
+                )}
+
                 <button
                     type="submit"
-                    className="text-lg w-full py-1 border-4 border-blue-100 text-blue-500 rounded-md cursor-pointer ">تایید</button>
+                    disabled={!expiresTime.leftTime <= 0}
+                    className={`
+          text-lg w-full py-2 border-2 rounded-md font-medium transition-colors duration-200 ease-in-out cursor-pointer
+          ${!expiresTime.leftTime <= 0
+                            ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                            : "border-blue-200 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-gray-100"
+                        }
+        `}
+                >
+                    تایید
+                </button>
             </div>
         </form>
     );
+
 }

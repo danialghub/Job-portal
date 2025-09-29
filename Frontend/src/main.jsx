@@ -1,7 +1,8 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
-import AppContextProvider from './context/AppContext.jsx'
+import AppProvider from './context/AppProvider.jsx'
+import ThemeProvider from './context/ThemeContext.jsx'
 import './index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
 import 'quill/dist/quill.snow.css'
@@ -16,9 +17,11 @@ if (!PUBLISHABLE_KEY) {
 createRoot(document.getElementById('root')).render(
   <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
     <BrowserRouter>
-      <AppContextProvider>
-        <App />
-      </AppContextProvider>
+      <AppProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+      </AppProvider>
     </BrowserRouter>
   </ClerkProvider>
   ,

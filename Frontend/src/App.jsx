@@ -1,27 +1,23 @@
 
-import { useContext } from 'react'
-import { AppContext } from './context/AppContext'
+import { useApp } from './context/AppProvider'
 import RecruiterLogin from './Components/RecruiterLogin'
 import AppRoutes from './routes'
-
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-
+import { Toaster } from 'react-hot-toast'
 
 function App() {
 
-  const { showRecruiterLogin } = useContext(AppContext)
+  const { showRecruiterLogin } = useApp()
 
   return (
     <>
       {showRecruiterLogin && <RecruiterLogin />}
-      <div className='max-sm:w-[85vw] max-sm:mx-auto ' >
-        <ToastContainer
-          autoClose={2000}
-          rtl={true}
-          draggable
-        />
-      </div >
+
+      <Toaster
+        toastOptions={{
+          className: "dark:bg-gray-800 dark:text-white bg-white text-black shadow-lg rounded-lg",
+        }}
+      />
+
       <AppRoutes />
     </>
 

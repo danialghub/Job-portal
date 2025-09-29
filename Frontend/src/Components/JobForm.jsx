@@ -1,40 +1,37 @@
-import React, { useEffect, useRef, useState, useContext } from 'react'
-import { AppContext } from '../context/AppContext'
+import { useEffect, useRef, useState } from 'react'
+import {  useApp } from '../context/AppProvider'
 import Quill from 'quill'
 import { JobCategories, JobLocations } from '../assets/assets'
 
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 const JobForm = ({ job, state, jobId }) => {
     console.log("Job form");
 
     const toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
-        ['link', 'image', 'video', 'formula'],
+        [{ direction: "rtl" }],
+        [{ align: [] }],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }],
-
         [{ 'indent': '-1' }, { 'indent': '+1' }],
-        [{ 'direction': 'rtl' }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        ['code-block'],
+        ['link', 'image', 'video', 'formula'],
+        [{ 'size': ['small', false, 'large', 'huge'] }, { 'header': [1, 2, 3, 4, 5, 6, false] }],
 
         [{ 'color': [] }, { 'background': [] }],
-        [{ 'align': [] }],
-
 
     ];
+
     const navigate = useNavigate()
-    const { getJobs } = useContext(AppContext)
+    const { getJobs } = useApp()
     const [title, setTitle] = useState(job?.title || '')
     const [location, setLocation] = useState(job?.location || 'تهران')
     const [category, setCategory] = useState(job?.category || 'برنامه نویسی')
     const [level, setLevel] = useState(job?.level || 'سطح مبتدی')
     const [salary, setSalary] = useState(job?.salary || 0)
-
+    //  const {values , errors, handleChange , handleSubmit , setValues} = useForm({title,location,category,level,salary},onSubmitHandler)
     const editorRef = useRef(null)
     const quillRef = useRef(null)
 
@@ -42,83 +39,88 @@ const JobForm = ({ job, state, jobId }) => {
         e.preventDefault()
         try {
             const description = quillRef.current.root.innerHTML
-            const newJob = {
-                title,
-                description,
-                category,
-                level,
-                salary,
-                location,
-            }
-            if (state == "ایجاد") {
-                postJob(newJob, 'post-job')
-            } else {
-                if (await postJob(newJob, 'update-job')) {
-                    navigate('/dashboard/manage-jobs')
-                }
+            const newJob = { title, description, category, level, salary, location }
 
+            const endpoint = state === "ایجاد" ? "post-job" : "update-job"
+            const success = await postJob(newJob, endpoint)
+
+            if (success && state !== "ایجاد") {
+                navigate("/dashboard/manage-jobs")
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.response?.data?.message || error.message)
         }
     }
     const postJob = async (newJob, endpoint) => {
-        const { data } = jobId
-            ? await axios.put(`/api/company/${endpoint}`, { ...newJob, jobId })
-            : await axios.post(`/api/company/${endpoint}`, newJob)
+        try {
+            const url = `/api/company/${endpoint}`
+            const payload = jobId ? { ...newJob, jobId } : newJob
+            const action = jobId ? axios.put : axios.post
 
-        if (data.success) {
-            setTitle("")
-            setSalary(0)
-            quillRef.current.root.innerHTML = ""
-            getJobs()
-            toast.success(data.message)
-            return true
-        } else {
-            toast.error(data.message)
+            const { data } = await action(url, payload)
+
+            if (data.success) {
+                // reset form
+                setTitle("")
+                setSalary(0)
+
+                quillRef.current.setContents([])
+
+                getJobs()
+                toast.success(data.message)
+                return true
+            } else {
+                toast.error(data.message)
+                return false
+            }
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Something went wrong")
+            return false
         }
-
     }
 
+
     useEffect(() => {
-        if (!quillRef.current && editorRef.current)
+        if (!quillRef.current && editorRef.current) {
             quillRef.current = new Quill(editorRef.current, {
-                theme: 'snow',
+                theme: "snow",
                 placeholder: "شرایط ، وظایف و شرح کار را در اینجا تعریف کنید.",
                 modules: {
-                    toolbar: toolbarOptions
-                }
-            })
-        quillRef.current.format('align', 'right')
-        quillRef.current.format('direction', 'rtl')
-        quillRef.current.root.innerHTML = job?.description || ""
+                    toolbar: toolbarOptions,
+                },
+            });
 
-    }, [])
+        }
+        // مقداردهی اولیه متن
+        quillRef.current.root.innerHTML = job?.description || "";
+    }, []);
+
+
 
 
     return (
-        <form className='flex-1 container max-w-5xl p-4 flex flex-col w-full items-start gap-5'>
-            <h3 className='text-2xl sm:text-3xl font-bold text-black/70 my-4'>فرم {state} کار</h3>
+        <div className='flex-1  container max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>        <form className=' max-w-5xl p-4 flex flex-col w-full items-start gap-5'>
+            <h3 className='text-2xl sm:text-3xl font-bold text-black/70 my-4 dark:text-gray-100'>فرم {state} کار</h3>
             <div className='w-full'>
-                <p className='mb-2 text-gray-600'>عنوان کار</p>
+                <p className='mb-2 text-gray-600 dark:text-gray-300'>عنوان کار</p>
                 <input
                     placeholder='عنوان'
                     onChange={e => setTitle(e.target.value)}
                     value={title}
                     type="text"
-                    className='w-full max-w-lg px-3 py-1 sm:py-2 border-2 border-gray-300 rounded'
+                    className='w-full max-w-lg px-3 py-1 sm:py-2 border-2 border-gray-300 rounded dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
                 />
             </div>
             <div className='w-full '>
-                <p className='my-2 text-gray-600'>توضیحات کار</p>
-                <div ref={editorRef}></div>
+                <p className='my-2 text-gray-600 dark:text-gray-300'>توضیحات کار</p>
+                <div className='dark:text-gray-100 dark:bg-slate-900' ref={editorRef} ></div>
 
             </div>
             <div className='flex flex-col items-start sm:flex-row w-full  sm:items-center gap-8 sm:gap-8'>
                 <div className='w-full'>
-                    <p className='mb-2 text-gray-600'>دسته بندی کار</p>
+                    <p className='mb-2 text-gray-600 dark:text-gray-300'>دسته بندی کار</p>
                     <select
-                        className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none'
+                        className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
                         value={category}
                         onChange={e => setCategory(e.target.value)}>
                         {JobCategories.map((item, idx) => (
@@ -129,9 +131,9 @@ const JobForm = ({ job, state, jobId }) => {
                     </select>
                 </div>
                 <div className='w-full'>
-                    <p className='mb-2 text-gray-600'>مکان کار</p>
+                    <p className='mb-2 text-gray-600 dark:text-gray-300'>مکان کار</p>
                     <select
-                        className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none'
+                        className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
                         value={location}
                         onChange={e => setLocation(e.target.value)}>
                         {JobLocations.map((item, idx) => (
@@ -142,9 +144,9 @@ const JobForm = ({ job, state, jobId }) => {
                     </select>
                 </div>
                 <div className='w-full'>
-                    <p className='mb-2 text-gray-600'>سطح کار</p>
+                    <p className='mb-2 text-gray-600 dark:text-gray-300'>سطح کار</p>
                     <select
-                        className='w-full  px-3 py-1 sm:py-2 border-2 border-gray-300 rounded outline-none'
+                        className='w-full  px-3 py-1 sm:py-2 border-2 border-gray-300 rounded outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
                         value={level}
                         onChange={e => setLevel(e.target.value)}>
 
@@ -156,11 +158,11 @@ const JobForm = ({ job, state, jobId }) => {
                 </div>
             </div>
 
-            <div className=''>
-                <p className='mb-2 text-gray-600'>حقوق کار</p>
+            <div className='w-full'>
+                <p className='mb-2 text-gray-600 dark:text-gray-300' >حقوق کار</p>
                 <input
                     value={salary}
-                    className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded sm:w-[120px]'
+                    className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded sm:w-[120px] dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
                     onChange={e => setSalary(e.target.value)}
                     type="Number"
                     min={0} />
@@ -170,6 +172,8 @@ const JobForm = ({ job, state, jobId }) => {
                 className='w-28 py-2 my-4 bg-gray-800 text-white rounded '>{state}</button>
 
         </form>
+        </div>
+
     )
 }
 

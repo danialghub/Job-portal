@@ -10,49 +10,62 @@ import sendOtp from '../utils/sendOtp.js'
 
 //sending OTP _ pre-register
 export const sendingOTP = async (req, res) => {
-    const { name, email, password } = req.body
-
-    if (!name || !email || !password) {
-        return res.json({ success: false, message: "داده ها از دست رفته" })
-    }
 
     try {
+
+        const { name, email, password } = req.body
+
+        if (!name || !email || !password) {
+            return res.json({ success: false, message: "داده ها از دست رفته" })
+        }
         let isCompanyExist = await Company.findOne({ email })
         const isOTPExist = await Otp.findOne({ email })
-        if (isCompanyExist?.email && isCompanyExist.isVerified) {
+        if (isCompanyExist?.email) {
             return res.json({ success: false, message: "درحال حاضر این شرکت وجود دارد" })
         } else if (isOTPExist) {
             return res.json({ success: false, message: "هنوز کد قبلی منقضی نشده است" })
         }
-
-        const code = String(randomInt(1000, 10000))
         const salt = await bcrypt.genSalt(10)
-        const hashPasword = await bcrypt.hash(password, salt)
+        const code = String(randomInt(1000, 10000))
         const hashCode = await bcrypt.hash(code, salt)
+        let result = await sendOtp(code, email, "ایجاد")
 
-        let result = sendOtp(code, email, "ایجاد")
         if (!result) return res.json({ success: false })
-
-        let company = {
-            name,
-            email,
-            password: hashPasword,
-            image: req.file?.path || ""
-        }
-
-
-        if (isCompanyExist?.email && !isCompanyExist.isVerified) {
-            Object.assign(isCompanyExist, company)
-            await isCompanyExist.save()
-        } else {
-            await Company.create(company)
-        }
 
         const otp = await Otp.create({
             email,
             code: hashCode,
+            expiresAt: Date.now() + 120000
         })
 
+        res.json({ success: true, expiresAt: otp.expiresAt })
+
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
+//re_sending OTP code _ pre-register
+export const reSendOtp = async (req, res) => {
+    try {
+        const { email } = req.body
+
+        if (!email)
+            return res.json({ success: false, message: "!ابتدا ایمیل را وارد کنید" })
+
+        const salt = await bcrypt.genSalt(10)
+        const code = String(randomInt(1000, 10000))
+
+        const hashCode = await bcrypt.hash(code, salt)
+        let result = await sendOtp(code, email, "ایجاد")
+
+        if (!result) return res.json({ success: false })
+
+
+        const otp = await Otp.create({
+            email,
+            code: hashCode,
+            expiresAt: Date.now() + 120000
+        })
 
         res.json({ success: true, expiresAt: otp.expiresAt })
 
@@ -62,35 +75,39 @@ export const sendingOTP = async (req, res) => {
 }
 //Register a new Company 
 export const registerCompany = async (req, res) => {
-
+    const { name, email, password } = req.body
     try {
-        let imageUpload;
-        const company = req.company
-        if (company.image) {
-            imageUpload = await cloudinary.uploader.upload(company.image, {
+
+        const salt = await bcrypt.genSalt(10)
+        const hashPasword = await bcrypt.hash(password, salt)
+        let companyData = {
+            name,
+            email,
+            password: hashPasword,
+            image: ""
+        }
+
+        if (req.file?.path) {
+            const imageUpload = await cloudinary.uploader.upload(req.file.path, {
                 transformation: [
                     { width: 500, crop: 'fill', gravity: 'face' },
                     { quality: 'auto', fetch_format: "auto" }
                 ]
             })
+            companyData.image = imageUpload.secure_url
+
         }
 
-        await Company.findByIdAndUpdate(company._id, { image: imageUpload.secure_url, isVerified: true })
-
+        const company = await Company.create(companyData)
 
         res.json({
             success: true,
-            company: {
-                _id: company._id,
-                name: company.name,
-                email: company.email,
-                image: imageUpload
-            },
+            company,
             token: generateToken(company._id)
         })
 
     } catch (error) {
-        
+
         res.json({ success: false, message: error.message })
     }
 }
@@ -99,7 +116,7 @@ export const loginCompany = async (req, res) => {
     const { email, password } = req.body
 
     try {
-        const company = await Company.findOne({ email, isVerified: true })
+        const company = await Company.findOne({ email })
 
         if (!company.email) {
             return res.json({ success: false, message: "شرکت نامعتبر است" })
@@ -152,15 +169,13 @@ export const updateCompany = async (req, res) => {
                 })
             updatedCompany['image'] = uploadImage.secure_url
         }
-        console.log(updatedCompany['image']);
 
 
         //update password , if there is a password
 
-
         if (password && newPassword) {
 
-            const company = await Company.findOne({ _id: companyId, isVerified: true }).select('password')
+            const company = await Company.findOne({ _id: companyId }).select('password')
 
             const isPass = await bcrypt.compare(password, company.password)
             if (!isPass) {
@@ -174,9 +189,6 @@ export const updateCompany = async (req, res) => {
         } else if (password || newPassword) errors.push("هم پسورد فعلی هم پسورد جدید باید مقدار دهی شود")
 
 
-
-        console.log(Object.keys(updatedCompany).length);
-
         if (Object.keys(updatedCompany).length)
             await Company.updateOne({ _id: companyId }, { ...updatedCompany })
         else {
@@ -187,7 +199,7 @@ export const updateCompany = async (req, res) => {
 
     } catch (error) {
         errors.push(error.message)
-        res.json({ success: false,  errors})
+        res.json({ success: false, errors })
 
     }
 }
@@ -202,7 +214,6 @@ export const getCompanyData = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
-
 //post a new job
 export const postJob = async (req, res) => {
     const { title, description, salary, location, level, category } = req.body

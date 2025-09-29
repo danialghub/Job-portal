@@ -1,112 +1,116 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-* {
-    font-family: Vazirmatn, "Outfit";
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-    html {
-        scroll-behavior: smooth;
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    font-family: Vazirmatn, "Outfit";
+    @apply max-sm:[&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-3.5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:bg-gray-400 dark:[&::-webkit-scrollbar-track]:bg-slate-900 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700
+  }
+}
+
+@layer components {
+
+  .btn {
+    @apply w-full py-2 px-4 rounded-full mt-2 font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-400 text-white hover:bg-gray-500 dark:hover:bg-gray-700 dark:bg-gray-600;
+  }
+
+  /* کانتینر ورودی + آیکون */
+  .input-wrapper {
+    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 py-2 flex items-center gap-2 rounded-full mt-5 focus-within:ring-2 focus-within:ring-blue-500 transition-colors;
+  }
+
+  /* خود ورودی */
+  .input {
+    @apply outline-none text-sm w-full text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 bg-transparent;
+  }
+
+  /* مدال اصلی */
+  .modal {
+    @apply bg-white dark:bg-slate-900 p-10 rounded-xl text-slate-600 dark:text-slate-200 relative max-w-full shadow-lg;
+  }
+
+  /* متن توضیحات */
+  .text-muted {
+    @apply text-sm my-2 text-slate-500 dark:text-slate-400;
+  }
+
+  /* لینک داخل متن */
+  .text-link {
+    @apply text-blue-600 cursor-pointer mr-1 dark:text-blue-400;
+  }
+
+
+  .home-rich-para * {
+    @apply dark:text-gray-400 text-gray-600 !bg-transparent;
+  }
+
+  .rich-text {
+    @apply text-[15px] text-[#7A7B7D] break-words dark:text-[#b0b0b0];
+
+    span {
+      @apply leading-[30px] px-2 dark:text-slate-700;
     }
-}
 
-/* ::-webkit-scrollbar{
-    display: none;
-} */
-.rich-text {
-    font-size: 15px;
-    color: #7A7B7D;
+    a {
+      @apply !text-blue-500 underline
+    }
 
-}
+    h1 {
+      @apply text-[36px] font-extrabold text-[#252525] my-4 dark:text-white;
+    }
+
+    h2 {
+      @apply text-[22px] font-bold text-[#252525] my-4 dark:text-gray-200;
+    }
+
+    h3 {
+      @apply text-[18px] font-semibold text-[#333333] my-4 dark:text-gray-300;
+    }
+
+    h4 {
+      @apply text-[16px] font-medium text-[#444444] my-4 dark:text-gray-400;
+    }
+
+    h5 {
+      @apply text-[14px] font-normal text-[#555555] my-4 dark:text-gray-500;
+    }
+
+    h6 {
+      @apply text-[12px] font-normal text-[#666666] my-4 dark:text-gray-600;
+    }
+
+    strong {
+      @apply font-bold;
+    }
+
+    ol {
+      @apply ml-[30px] list-decimal;
+    }
+
+    ul {
+      @apply ml-[30px] list-disc;
+    }
+
+    li {
+      @apply mb-0;
+    }
+  }
 
 
-.rich-text span {
-    line-height: 30px;
-
-    @apply px-2
-}
-
-.rich-text h1 {
-    font-size: 36px;
-    font-weight: 800;
-    color: #252525;
-    margin: 16px 0;
-}
-
-.rich-text h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #252525;
-    margin: 16px 0;
-}
-
-.rich-text h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333333;
-    margin: 16px 0;
-}
-
-.rich-text h4 {
-    font-size: 16px;
-    font-weight: 500;
-    color: #444444;
-    margin: 16px 0;
-}
-
-.rich-text h5 {
-    font-size: 14px;
-    font-weight: 400;
-    color: #555555;
-    margin: 16px 0;
-}
-
-.rich-text h6 {
-    font-size: 12px;
-    font-weight: 400;
-    color: #666666;
-    margin: 16px 0;
-}
-
-.rich-text strong {
-    font-weight: 700;
-}
-
-.rich-text ol {
-    margin-left: 30px;
-    list-style-type: decimal;
-}
-
-.rich-text ul {
-    margin-left: 30px;
-    list-style-type: disc;
-}
-
-.rich-text li {
-    margin-bottom: 0px
-}
-
-.rich-text {
-    overflow-wrap: break-word;
-
-}
-
-.ql-editor{
-    text-align: right !important;
-}
-
-.Toastify__toast-container {
-    padding: 0 15px !important;
-    margin-top: 10px;
-
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none;
 }

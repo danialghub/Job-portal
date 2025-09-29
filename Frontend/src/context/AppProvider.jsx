@@ -1,15 +1,18 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 import { useUser, useAuth } from '@clerk/clerk-react'
 import { useNavigate } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
 
-export const AppContext = createContext()
+const AppContext = createContext()
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 axios.defaults.baseURL = backendUrl
-console.log(axios.defaults.baseURL);
 
-const AppContextProvider = ({ children }) => {
+
+const AppProvider = ({ children }) => {
+
+    const isMobile = useMediaQuery({ maxWidth: 767 })
 
     const navigate = useNavigate()
     const { user } = useUser()
@@ -75,7 +78,6 @@ const AppContextProvider = ({ children }) => {
     const fetchUserApplications = async () => {
         try {
             const token = await getToken()
-            console.log(token);
 
             const { data } = await axios.get('/api/users/applications', {
                 headers: { Authorization: `Bearer ${token}` }
@@ -137,7 +139,8 @@ const AppContextProvider = ({ children }) => {
         fetchUsersData,
         fetchUserApplications,
         logoutHandler,
-        fetchCompanyData
+        fetchCompanyData,
+        isMobile
 
     }
 
@@ -147,5 +150,5 @@ const AppContextProvider = ({ children }) => {
         </AppContext.Provider>
     )
 }
-
-export default AppContextProvider
+export const useApp =  ()=> useContext(AppContext)
+export default AppProvider

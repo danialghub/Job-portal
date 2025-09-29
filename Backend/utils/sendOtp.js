@@ -1,13 +1,16 @@
-import OtpMailer from '../config/nodeMail.js'
+
 import fs from 'fs'
 import path from 'path';
 
+import OtpMailer from '../config/nodeMail.js'
 
-const sendOtp = async (otp, to, status) => {
+const sendOtp = async (code, to, status) => {
 
     const htmlPath = path.join(process.cwd(), "view/EmailView.html");
     let htmlContent = fs.readFileSync(htmlPath, "utf-8");
-    htmlContent = htmlContent.replace("{{OTP_CODE}}", otp);
+    console.log(code);
+    
+    htmlContent = htmlContent.replace("{{OTP_CODE}}", code);
 
     const mailOptions = {
         from: "DLAZ@gmail.com",
@@ -17,6 +20,7 @@ const sendOtp = async (otp, to, status) => {
     };
 
     try {
+
         const mailer = await OtpMailer()
         const result = await mailer.sendMail(mailOptions);
         console.log("ایمیل ارسال شد:", result.response);
@@ -26,5 +30,7 @@ const sendOtp = async (otp, to, status) => {
         return false
     }
 }
+
+
 
 export default sendOtp

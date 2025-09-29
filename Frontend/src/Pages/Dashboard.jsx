@@ -1,14 +1,14 @@
-import  { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Outlet, useNavigate, NavLink } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { AppContext } from '../context/AppContext'
+import { useApp } from '../context/AppProvider'
 import Navbar from '../Components/Navbar'
 import { FaHome } from "react-icons/fa";
 
 const Dashboard = () => {
     const navigate = useNavigate()
-    const { companyData } = useContext(AppContext)
-    
+    const { companyData } = useApp()
+
     const navMenu = [
         { title: 'ایجاد کار', route: '/dashboard/add-job', icon: assets.add_icon },
         { title: 'مدیریت کارها', route: '/dashboard/manage-jobs', icon: assets.home_icon },
@@ -24,10 +24,10 @@ const Dashboard = () => {
     }, [companyData])
     return (
 
-        <div className='min-h-screen '>
+        <div className='h-screen bg-white  dark:bg-slate-950 overflow-hidden transition-colors duration-300'>
             {/* navbar for recruiter Login */}
             <Navbar >
-                <li className='py-2 cursor-pointer pr-1  '>
+                <li className='py-2 cursor-pointer pr-1 hover:bg-gray-100 dark:hover:bg-gray-800  '>
 
                     <NavLink to="/"
                         className='flex items-center gap-2'
@@ -37,18 +37,18 @@ const Dashboard = () => {
                     </NavLink>
                 </li>
             </Navbar>
-            {/* main Content */}
-            <div className='flex items-start '>
+
+            <div className='flex items-start max-h-screen overflow-hidden'>
                 {/* left Sidebar  */}
-                <div className='inline-block min-h-screen border-l-2 '>
-                    <ul className='flex flex-col items-start pt-5 text-gray-800'>
+                <div className='inline-block border-l-2 min-h-screen border-gray-200 dark:border-gray-700 '>
+                    <ul className='flex flex-col gap-1 items-start pt-5 text-gray-800 dark:text-gray-400'>
                         {navMenu.map((menu, idx) => (
                             <NavLink
                                 key={idx}
-                                className={({ isActive }) => `flex items-center p-3 sm:px-6 gap-2 w-full hover:bg-gray-100 ${isActive && "bg-blue-100 border-l-4 border-blue-500 "}`}
+                                className={({ isActive }) => `flex items-center p-3 sm:px-8 gap-2 w-full hover:bg-gray-100 dark:hover:bg-gray-900 ${isActive && "bg-blue-100 dark:bg-slate-800 border-l-4 border-blue-500 dark:border-blue-700"}`}
                                 to={menu.route}>
                                 <img
-                                    className='min-w-4 max-w-6'
+                                    className='min-w-4 max-w-5 dark:invert'
                                     src={menu.icon} alt="" />
                                 <p className='max-sm:hidden'>{menu.title}</p>
                             </NavLink>
@@ -56,6 +56,7 @@ const Dashboard = () => {
                     </ul>
                     {/* main content mounts from other pages */}
                 </div>
+                {/* main Content */}
                 <Outlet />
             </div>
         </div>

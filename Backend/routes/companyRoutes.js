@@ -1,15 +1,18 @@
 import express from 'express'
-import { changeJobApplicationsStatus, changeJobVisibility, getCompanyData, getCompanyJobApplicants, getCompanyPostedJobs, loginCompany, postJob, registerCompany, removeJobs, updateCompany, UpdateJob, sendingOTP } from '../controller/comapanyController.js'
+import { changeJobApplicationsStatus, changeJobVisibility, getCompanyData, getCompanyJobApplicants, getCompanyPostedJobs, loginCompany, postJob, registerCompany, removeJobs, updateCompany, UpdateJob, sendingOTP, reSendOtp } from '../controller/comapanyController.js'
 import upload from '../config/multer.js'
-import { protectCompany, authCompany } from '../middlewares/auth.js'
+import { protectCompany, authCompany, preventMultipleRequests } from '../middlewares/auth.js'
 
 const router = express.Router()
 
 //Send OTP _ pre_register
-router.post('/pre-register', upload.single('image'), sendingOTP)
+router.post('/pre-register', preventMultipleRequests, sendingOTP)
+
+//reSend OTP _ pre_register
+router.post('/resend-code', preventMultipleRequests, reSendOtp)
 
 //Register a company
-router.post('/register', authCompany, registerCompany)
+router.post('/register', upload.single('image'), authCompany, registerCompany)
 
 //company login 
 router.post('/login', loginCompany)

@@ -1,23 +1,21 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AppContext } from '../context/AppContext'
+import { useApp } from '../context/AppProvider'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import JobCard from '../Components/JobCard'
-import Loading from '../Components/Loading'
-// import kConvert from 'k-convert'
+
 import { assets } from '../assets/assets'
 import moment from 'moment/min/moment-with-locales'
 
-// import  from 'moment-jalaali'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 import { useAuth } from '@clerk/clerk-react'
 import Skletons from '../Components/Skeletons'
 
 const ApplyJob = () => {
   const { id } = useParams()
-  const { jobs, userData, userApplications, fetchUserApplications } = useContext(AppContext)
+  const { jobs, userData, userApplications, fetchUserApplications } = useApp()
 
   const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
 
@@ -93,28 +91,26 @@ const ApplyJob = () => {
   }, [id, jobData, userApplications])
 
 
-  return jobData  ? (
-    <>
+  return jobData ? (
+    <div className='dark:bg-slate-950'>
       <Navbar />
 
       {/*main contents*/}
-      <div className='min-h-screen container flex flex-col mx-auto px-4 py-10 2xl:px-20 bg-white rounded-lg'>
+      <div className='min-h-screen container flex flex-col mx-auto px-4 py-10 2xl:px-20  rounded-lg '>
         {/*job info section */}
-        <div className='rounded-xl text-black  w-full flex justify-center flex-wrap  md:justify-between gap-8 py-16 px-14 sm:py-20 mb-6 bg-sky-50 border border-sky-400 '>
-          <div className='flex flex-col md:flex-row gap-8  items-center '>
-
-
+        <div className='rounded-xl text-black dark:text-white w-full flex justify-center flex-wrap md:justify-between gap-8 py-16 px-10 sm:py-20 mb-6 bg-sky-50 dark:bg-gray-800 border border-sky-400 dark:border-gray-700'>
+          <div className='flex flex-col md:flex-row gap-8 items-center'>
             <img
               src={jobData.companyId.image ? jobData.companyId.image : assets.company_place_holder}
               alt=""
-              className='size-24 rounded-lg p-4   bg-white flex items-center justify-center'
+              className='size-24 rounded-lg p-4 bg-white dark:bg-gray-700 flex items-center justify-center'
             />
 
-            <div className='text-center md:text-right text-neutral-700'>
-              <h3 className='text-2xl sm:text-4xl mb-4 font-medium'>{jobData.title} </h3>
+            <div className='text-center md:text-right text-neutral-700 dark:text-gray-300'>
+              <h3 className='text-xl sm:text-4xl mb-4 font-medium'>{jobData.title}</h3>
 
-              <div className='grid max-sm:grid-cols-2 sm:grid-flow-col max-sm:gap-y-3  gap-x-3 sm:gap-x-5 text-gray-600  text-sm h-6 '>
-                <span className="flex  gap-1 items-center">
+              <div className='grid max-sm:grid-cols-2 sm:grid-flow-col max-sm:gap-y-3 gap-x-3 sm:gap-x-5 text-gray-600 dark:text-gray-400 text-sm h-6'>
+                <span className="flex gap-1 items-center">
                   <img src={assets.suitcase_icon} alt="" />
                   {jobData.companyId.name}
                 </span>
@@ -122,33 +118,36 @@ const ApplyJob = () => {
                   <img src={assets.location_icon} alt="" />
                   {jobData.location}
                 </span>
-                <span className="flex gap-1   items-center">
+                <span className="flex gap-1 items-center">
                   <img src={assets.person_icon} alt="" />
                   {jobData.level}
                 </span>
                 <span className="flex gap-1 items-center">
-                  <img src={assets.money_icon} alt="" />
+                  <img src={assets.money_icon} alt="" className='dark:invert' />
                   {kConvertFa(jobData.salary)}
                 </span>
-
-
               </div>
             </div>
           </div>
-          <div className='flex flex-col justify-center text-start text-sm '>
+
+          <div className='flex flex-col justify-center text-start text-sm'>
             <button
               onClick={applyHandler}
-              className={`${isAlreadyApplied ? "bg-gray-500 pointer-events-none" : "bg-blue-600"} px-10 py-2.5 my-2 mt-8 max-md:mx-auto max-md:text-center  rounded text-white `}>
+              className={`${isAlreadyApplied ? "bg-gray-500 pointer-events-none dark:bg-gray-600" : "bg-blue-600"} px-10 py-2.5 my-2 mt-8 max-md:mx-auto max-md:text-center rounded text-white`}
+            >
               {isAlreadyApplied ? "درخواست داده شده" : "درخواست کار"}
             </button>
-            <p className='font-light text-gray-600'>پست شده در {moment(jobData.date).locale('fa').fromNow()}</p>
+            <p className='font-light text-gray-600 dark:text-gray-400'>
+              پست شده در {moment(jobData.date).locale('fa').fromNow()}
+            </p>
           </div>
         </div>
+
 
         <div className='flex flex-col lg:flex-row justify-between items-start'>
           {/*description section */}
           <div className='w-full lg:w-2/4 '>
-            <h2 className='font-bold mb-4 text-2xl'>توضیحات کار</h2>
+            <h2 className='font-bold mb-4 text-2xl dark:text-gray-100'>توضیحات کار</h2>
             <div className='rich-text' dangerouslySetInnerHTML={{ __html: jobData.description }}></div>
             <button
               onClick={applyHandler}
@@ -178,7 +177,7 @@ const ApplyJob = () => {
       </div>
 
       <Footer />
-    </>
+    </div>
   ) : <Skletons />
 
 }

@@ -7,7 +7,7 @@ const Home = () => {
 
 
     return (
-        <div>
+        <div className='dark:bg-slate-950 transition-colors duration-300'>
             <Navbar />
             <Hero />
             <JobListing />
