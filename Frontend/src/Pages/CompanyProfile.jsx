@@ -250,7 +250,7 @@ export default function CompanyProfile() {
                 </div>
 
                 {/* Mini text */}
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-black/40 dark:bg-white/20 px-4 py-2 rounded-full text-xs text-white backdrop-blur-sm">
+                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-black/40 dark:bg-white/20 px-4 py-2 rounded-full text-xs text-white backdrop-blur-sm max-sm:text-[10px]">
                   برای تغییر مکان عکس را درگ کنید
                 </div>
               </div>

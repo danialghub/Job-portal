@@ -50,6 +50,12 @@ const AppProvider = ({ children }) => {
                 setCompanyData(data.company)
             } else {
                 toast.error(data.message)
+                if (data.status == 401) {
+                    console.log(data.status);
+                    
+                    localStorage.removeItem('companyToken')
+                    setCompanyToken('')
+                }
             }
 
         } catch (error) {
@@ -150,5 +156,5 @@ const AppProvider = ({ children }) => {
         </AppContext.Provider>
     )
 }
-export const useApp =  ()=> useContext(AppContext)
+export const useApp = () => useContext(AppContext)
 export default AppProvider

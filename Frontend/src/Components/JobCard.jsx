@@ -46,7 +46,7 @@ const FlipCard = ({ children, description, height = "300px" }) => {
 
                 {/* Back */}
                 <div className="absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-xl shadow-md bg-slate-200 dark:bg-slate-900 p-4 overflow-auto [&::-webkit-scrollbar]:w-2">
-                    <p className='text-sm text-gray-600 dark:text-gray-300 py-8' dangerouslySetInnerHTML={{ __html: description }}></p>
+                    <p className='text-sm home-rich-para text-gray-600 dark:text-gray-300 py-8' dangerouslySetInnerHTML={{ __html: description }}></p>
                 </div>
             </div>
         </motion.div>

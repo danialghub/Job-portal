@@ -4,16 +4,19 @@ import Otp from '../models/Otp.js'
 import bcrypt from 'bcrypt'
 import rateLimit from 'express-rate-limit'
 
-export const protectCompany = async (req, res, next) => {
+export const protectCompany =  (req, res, next) => {
   const token = req.headers.token
   if (!token) {
     return res.json({ success: false, message: "احراز هویت انجام نشد ، مجدد تلاش کنید" })
   }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    jwt.verify(token, process.env.JWT_SECRET, async(err, decoded) => {
+      if (err) 
+        return res.sendStatus(401)
 
-    req.company = await Company.findById(decoded.id).select("-password")
-    next()
+        req.company = await Company.findById(decoded.id).select("-password")
+        next()
+    });
 
   } catch (error) {
     return res.json({ success: false, message: error.message })

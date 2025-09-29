@@ -122,7 +122,7 @@ const ViewApplications = () => {
         {/* Mobile Cards */}
         <div className='flex flex-col gap-4 sm:hidden  mb-10'>
           {applicants
-            .slice((currentPage - 1) * 7, currentPage * 7)
+            .slice((currentPage - 1) * perPage, currentPage * perPage)
             .filter(item => item.jobId && item.userId)
             .map((data, idx) => (
               <div key={idx} className='relative bg-white dark:bg-slate-900 p-4 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition transform hover:scale-105'>
