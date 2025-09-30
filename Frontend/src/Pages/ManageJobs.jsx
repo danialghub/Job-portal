@@ -127,7 +127,7 @@ const ManageJobs = () => {
 
   return jobs ? (
     jobs.length === 0 ? (
-      <div className='flex items-center justify-center h-[90vh] dark:text-slate-600'>
+      <div className='flex-1 flex items-center justify-center h-[90vh] dark:text-slate-600'>
         <p className='text-xl sm:text-3xl'>هیچ کاری در دسترس نیست</p>
       </div>
     ) : (

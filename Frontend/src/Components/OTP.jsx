@@ -198,14 +198,10 @@ export default function OTP({
 
                 <button
                     type="submit"
-                    disabled={!expiresTime.leftTime <= 0}
-                    className={`
-          text-lg w-full py-2 border-2 rounded-md font-medium transition-colors duration-200 ease-in-out cursor-pointer
-          ${!expiresTime.leftTime <= 0
-                            ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-                            : "border-blue-200 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-gray-100"
-                        }
-        `}
+                    disabled={expiresTime.leftTime <= 0}
+                    className="text-lg w-full py-2 border-2 rounded-md font-medium transition-colors duration-200 ease-in-out cursor-pointer
+                             disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-500 dark:disabled:text-gray-400 
+                             border-blue-200 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-gray-100"
                 >
                     تایید
                 </button>
