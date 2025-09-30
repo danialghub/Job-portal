@@ -8,7 +8,7 @@ import OtpMailer from '../config/nodeMail.js'
 const sendOtp = async (code, to, status) => {
     const __fileName = fileURLToPath(import.meta.url)
     const __dirName = path.dirname(__fileName)
-    const htmlPath = path.join(__dirName, "../public", "EmailView.html");
+    const htmlPath = path.join(__dirName, "../templates", "EmailView.html");
     console.log(htmlPath);
     
     let htmlContent = fs.readFileSync(htmlPath, "utf-8");
