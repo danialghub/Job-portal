@@ -1,15 +1,18 @@
 
 import fs from 'fs'
 import path from 'path';
+import { fileURLToPath } from "url";
 
 import OtpMailer from '../config/nodeMail.js'
 
-const sendOtp = async (code, to, status) => {
+const sendOtp = async (code, to, status, html = "EmailView.html") => {
 
-    const htmlPath = path.join(process.cwd(), "view/EmailView.html");
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const htmlPath = path.join(__dirname, "../view", html);
     let htmlContent = fs.readFileSync(htmlPath, "utf-8");
-    console.log(code);
-    
+
+
     htmlContent = htmlContent.replace("{{OTP_CODE}}", code);
 
     const mailOptions = {

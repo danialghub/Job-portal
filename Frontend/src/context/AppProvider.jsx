@@ -50,16 +50,16 @@ const AppProvider = ({ children }) => {
                 setCompanyData(data.company)
             } else {
                 toast.error(data.message)
-                if (data.status == 401) {
-                    console.log(data.status);
-                    
-                    localStorage.removeItem('companyToken')
-                    setCompanyToken('')
-                }
             }
 
         } catch (error) {
-            toast.error(error.message)
+            if (error.status === 401) {
+                localStorage.removeItem('companyToken')
+                setCompanyToken('')
+            } else {
+                toast.error(error.message)
+            }
+
         }
     }
     const fetchUsersData = async () => {

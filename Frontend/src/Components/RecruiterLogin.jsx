@@ -291,6 +291,7 @@ const RecruiterLogin = () => {
               }
 
               {state === "ثبت نام" && isTextDataSubmited ? (
+                // upload logo
                 <>
                   <UploadLogoStep
                     image={image}
@@ -299,6 +300,7 @@ const RecruiterLogin = () => {
                   />
                 </>
               ) : (
+                // sign in or sign up
                 <>
                   {state !== "ورود" && (
 
@@ -346,7 +348,7 @@ const RecruiterLogin = () => {
                   }
                 </>
               )}
-
+              {/* forgot password */}
               {state === "ورود" && (
                 <p className="text-sm text-blue-600 dark:text-blue-400 cursor-pointer my-4">
                   اکانتتو فراموش کردی؟
