@@ -1,13 +1,13 @@
 
 import fs from 'fs'
 import path from 'path';
-import { fileURLToPath } from "url";
+
 
 import OtpMailer from '../config/nodeMail.js'
 
-const sendOtp = async (code, to, status, html = "EmailView.html") => {
+const sendOtp = async (code, to, status) => {
 
-    const htmlPath = path.join(process.cwd(), "public", html);
+    const htmlPath = path.join(process.cwd(), "public", "EmailView.html");
     let htmlContent = fs.readFileSync(htmlPath, "utf-8");
 
 
