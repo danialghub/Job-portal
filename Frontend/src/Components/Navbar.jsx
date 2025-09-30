@@ -77,11 +77,11 @@ const Navbar = ({ children }) => {
     return (
         <div
             className='sticky top-0 left-0 z-50 shadow py-4  backdrop-blur-sm dark:bg-slate-900/20 dark:text-gray-100'>
-            <div className='container min-w-max px-8 2xl:px-20 flex justify-between items-center mx-auto '>
+            <div className='container min-w-max px-4 2xl:px-20 flex justify-between items-center mx-auto '>
 
                 <div className='flex items-center gap-5 sm:gap-12'>
                     <img
-                        className=' h-8 scale-125 sm:scale-150  dark:invert dark:hue-rotate-180 cursor-pointer'
+                        className=' h-8 scale-125 sm:scale-150 mr-2  dark:invert dark:hue-rotate-180 cursor-pointer'
                         src={assets.dlLogo} onClick={() => { navigate('/'); scrollTo(0, 500) }} alt="" />
 
                     <ThemeToggle />

@@ -1,8 +1,16 @@
 import { useRef } from 'react'
 import { useApp } from '../context/AppProvider'
 import { assets } from '../assets/assets'
-
+import { FaRocket, FaShieldAlt, FaHeadset, FaPuzzlePiece } from 'react-icons/fa';
 const Hero = () => {
+
+    const features = [
+        { icon: <FaRocket size={40} />, text: 'سرعت بالا' },
+        { icon: <FaShieldAlt size={40} />, text: 'امنیت کامل' },
+        { icon: <FaHeadset size={40} />, text: 'پشتیبانی ۲۴/۷' },
+        { icon: <FaPuzzlePiece size={40} />, text: 'یکپارچگی آسان' },
+    ];
+
     const { setIsSearched, setSearchFilter } = useApp()
 
     const jobRef = useRef(null)
@@ -52,17 +60,20 @@ const Hero = () => {
                     >جستجو</button>
                 </div>
             </div>
-            <div className='shadow-md border border-gray-300 dark:border-gray-600 dark:bg-gray-900 p-6 mt-5 mx-2 rounded flex'>
-                <div className='flex justify-center gap-10 lg:gap-16 flex-wrap'>
-                    <p className='text-lg dark:text-gray-200'>مورد اعتماد</p>
-                    <img className='h-6' src={assets.microsoft_logo} alt="" />
-                    <img className='h-6' src={assets.walmart_logo} alt="" />
-                    <img className='h-6 dark:invert dark:hue-rotate-180' src={assets.accenture_logo} alt="" />
-                    <img className='h-6' src={assets.samsung_logo} alt="" />
-                    <img className='h-6 dark:invert dark:hue-rotate-180' src={assets.amazon_logo} alt="" />
-                    <img className='h-6' src={assets.adobe_logo} alt="" />
+            <div className="shadow-md dark:bg-gray-900 p-6 mt-5 mx-2 rounded">
+                <div className="flex flex-wrap justify-center   gap-y-10 gap-x-20 lg:gap-30">
+                    {features.map((feature, idx) => (
+                        <div
+                            key={idx}
+                            className="flex flex-col justify-center items-center transition-transform transform hover:scale-110"
+                        >
+                            <div className="text-blue-500 dark:text-blue-400 mb-2">{feature.icon}</div>
+                            <p className="text-center dark:text-gray-200">{feature.text}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
+
 
         </div>
     )
