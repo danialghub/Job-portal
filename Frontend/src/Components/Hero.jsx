@@ -61,14 +61,14 @@ const Hero = () => {
                 </div>
             </div>
             <div className="shadow-md dark:bg-gray-900 p-6 mt-5 mx-2 rounded">
-                <div className="flex flex-wrap justify-center   gap-y-10 gap-x-20 lg:gap-30">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-10">
                     {features.map((feature, idx) => (
                         <div
                             key={idx}
                             className="flex flex-col justify-center items-center transition-transform transform hover:scale-110"
                         >
                             <div className="text-blue-500 dark:text-blue-400 mb-2">{feature.icon}</div>
-                            <p className="text-center dark:text-gray-200">{feature.text}</p>
+                            <p className=" dark:text-gray-200">{feature.text}</p>
                         </div>
                     ))}
                 </div>

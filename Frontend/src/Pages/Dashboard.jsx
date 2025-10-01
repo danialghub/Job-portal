@@ -48,7 +48,7 @@ const Dashboard = () => {
                                 className={({ isActive }) => `flex items-center p-3 sm:px-8 gap-2 w-full hover:bg-gray-100 dark:hover:bg-gray-900 ${isActive && "bg-blue-100 dark:bg-slate-800 border-l-4 border-blue-500 dark:border-blue-700"}`}
                                 to={menu.route}>
                                 <img
-                                    className='min-w-4 max-w-5 dark:invert-0 dark:hue-rotate-180'
+                                    className='min-w-4 max-w-5 dark:invert dark:hue-rotate-180'
                                     src={menu.icon} alt="" />
                                 <p className='max-sm:hidden'>{menu.title}</p>
                             </NavLink>
