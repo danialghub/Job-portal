@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 const Modal = ({ children }) => {
     return (
-        <div className="fixed inset-0 w-full h-screen z-100 backdrop-blur-sm bg-black/80 flex justify-center items-center">
+        <div className="fixed inset-0 w-full h-screen z-100 backdrop-blur-sm bg-black/70 flex justify-center items-center">
             <AnimatePresence>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
