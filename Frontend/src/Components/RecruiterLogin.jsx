@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 import { useApp } from "../context/AppProvider";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { motion, AnimatePresence } from "framer-motion";
+import Modal from "../layout/Modal";
 import OTP from "./OTP";
 
 // ==========================
@@ -270,131 +270,123 @@ const RecruiterLogin = () => {
   // Render
   // ==========================
   return (
-    <div className="fixed inset-0 z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center">
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="modal"
-        >
+    <Modal>
+      <div className="modal">
+        {!emailVerification ? (
+          <form onSubmit={onSubmit} >
+            <h1 className="text-center text-neutral-700 dark:text-neutral-200 font-medium text-2xl">
+              {state}
+            </h1>
+            {state === "ورود" &&
+              <p className="text-muted">
+                خوش برگشتید! لطفا برای ادامه وارد شوید
+              </p>
+            }
 
-          {!emailVerification ? (
-            <form onSubmit={onSubmit}>
-              <h1 className="text-center text-neutral-700 dark:text-neutral-200 font-medium text-2xl">
-                {state}
-              </h1>
-              {state === "ورود" &&
-                <p className="text-muted">
-                  خوش برگشتید! لطفا برای ادامه وارد شوید
-                </p>
-              }
+            {state === "ثبت نام" && isTextDataSubmited ? (
+              // upload logo
+              <>
+                <UploadLogoStep
+                  image={image}
+                  setImage={setImage}
+                  onBack={() => setIsTextDataSubmited(false)}
+                />
+              </>
+            ) : (
+              // sign in or sign up
+              <>
+                {state !== "ورود" && (
 
-              {state === "ثبت نام" && isTextDataSubmited ? (
-                // upload logo
-                <>
-                  <UploadLogoStep
-                    image={image}
-                    setImage={setImage}
-                    onBack={() => setIsTextDataSubmited(false)}
+                  <AuthInput
+                    icon={assets.person_icon}
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="نام شرکت"
+                    minLength={5}
                   />
-                </>
-              ) : (
-                // sign in or sign up
-                <>
-                  {state !== "ورود" && (
-
+                )}
+                <AuthInput
+                  icon={assets.email_icon}
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="ایمیل"
+                  autoComplete="email"
+                />
+                <AuthInput
+                  icon={assets.lock_icon}
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="پسورد"
+                  autoComplete="current-password"
+                  minLength={8}
+                />
+                {state !== "ورود" && (
+                  <div>
                     <AuthInput
-                      icon={assets.person_icon}
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="نام شرکت"
-                      minLength={5}
+                      icon={assets.lock_icon}
+                      type="password"
+                      value={repPwd}
+                      onChange={(e) => setRepPwd(e.target.value)}
+                      placeholder="تکرار مجدد پسورد"
+                      autoComplete="current-repeat-password"
+                      minLength={8}
                     />
-                  )}
-                  <AuthInput
-                    icon={assets.email_icon}
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="ایمیل"
-                    autoComplete="email"
-                  />
-                  <AuthInput
-                    icon={assets.lock_icon}
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="پسورد"
-                    autoComplete="current-password"
-                    minLength={8}
-                  />
-                  {state !== "ورود" && (
-                    <div>
-                      <AuthInput
-                        icon={assets.lock_icon}
-                        type="password"
-                        value={repPwd}
-                        onChange={(e) => setRepPwd(e.target.value)}
-                        placeholder="تکرار مجدد پسورد"
-                        autoComplete="current-repeat-password"
-                        minLength={8}
-                      />
-                      {error && <p className="text-sm text-red-700 dark:text-red-500 pt-2">{error}</p>}
-                    </div>
-                  )
-
-                  }
-                </>
-              )}
-              {/* forgot password */}
-              {state === "ورود" && (
-                <p className="text-sm text-blue-600 dark:text-blue-400 cursor-pointer my-4">
-                  اکانتتو فراموش کردی؟
-                </p>
-              )}
-
-              {/* Submit Button */}
-              {isButtonActive ? (
-                state == "ورود" ? (
-                  <Button value="وارد شوید" className="btn btn-primary" />
-                ) : (
-                  <Button
-                    value={isTextDataSubmited ? "تایید ایمیل" : "مرحله بعد"}
-                    className="btn btn-primary mt-8"
-                    disabled={error}
-                  />
+                    {error && <p className="text-sm text-red-700 dark:text-red-500 pt-2">{error}</p>}
+                  </div>
                 )
+
+                }
+              </>
+            )}
+            {/* forgot password */}
+            {state === "ورود" && (
+              <p className="text-sm text-blue-600 dark:text-blue-400 cursor-pointer my-4">
+                اکانتتو فراموش کردی؟
+              </p>
+            )}
+
+            {/* Submit Button */}
+            {isButtonActive ? (
+              state == "ورود" ? (
+                <Button value="وارد شوید" className="btn btn-primary" />
               ) : (
-                <Button className="btn btn-secondary pointer-events-none mt-8">
-                  <p className="text-md tracking-widest text-white">
-                    {formatTime(retryAfter)}
-                  </p>
-                </Button>
-              )}
+                <Button
+                  value={isTextDataSubmited ? "تایید ایمیل" : "مرحله بعد"}
+                  className="btn btn-primary mt-8"
+                  disabled={error}
+                />
+              )
+            ) : (
+              <Button className="btn btn-secondary pointer-events-none mt-8">
+                <p className="text-md tracking-widest text-white">
+                  {formatTime(retryAfter)}
+                </p>
+              </Button>
+            )}
 
-              <FormSwitcher state={state} setState={setState} />
+            <FormSwitcher state={state} setState={setState} />
 
-              <img
-                onClick={() => setShowRecruiterLogin(prev => !prev)}
-                className="absolute top-5 right-5 cursor-pointer invert dark:invert-0"
-                src={assets.cross_icon}
-                alt="بستن"
-              />
-            </form>
-          ) : (
-            <OTP
-              expiresTime={{ leftTime, handler: () => formatTime(leftTime) }}
-              registerHandler={registerHandler}
-              reSendOtp={reSendOtp}
-              setEmailVerfication={setEmailVerfication}
-              error={error}
+            <img
+              onClick={() => setShowRecruiterLogin(prev => !prev)}
+              className="absolute top-5 right-5 cursor-pointer invert dark:invert-0"
+              src={assets.cross_icon}
+              alt="بستن"
             />
-          )}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+          </form>
+        ) : (
+          <OTP
+            expiresTime={{ leftTime, handler: () => formatTime(leftTime) }}
+            registerHandler={registerHandler}
+            reSendOtp={reSendOtp}
+            setEmailVerfication={setEmailVerfication}
+            error={error}
+          />
+        )}
+      </div>
+    </Modal>
   );
 
 };

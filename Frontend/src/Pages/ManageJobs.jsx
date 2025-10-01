@@ -1,4 +1,4 @@
-import  {  useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useApp } from '../context/AppProvider'
 import { Link, useNavigate } from 'react-router-dom'
 import moment from 'moment-jalaali'
@@ -6,44 +6,12 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import Loader from '../Components/Loading'
 import Pagination from '../Components/Pagination'
-import { Dialog, DialogContent } from '@mui/material';
+import Warning from '../Components/Modal/Warning'
+import { useModal } from '../hooks/useModal'
 
 
 /////////////////////////////////////////////
-// sub components
 
-const DeleteConfirm = ({ open, onClose, onConfirm }) => {
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      PaperProps={{
-        className: 'bg-gray-800 dark:bg-slate-900 text-gray-100   pb-6   ',
-      }}
-    >
-      <DialogContent className="text-center dark:text-gray-300 text-black sm:text-xl mt-2">
-        آیا مطمئن هستید؟ <div className='text-red-500 pt-4'>این عمل غیرقابل بازگشت است.</div>
-      </DialogContent>
-      <div className="flex justify-center mt-6 gap-3 ">
-        <button
-          onClick={() => {
-            onConfirm();
-            onClose();
-          }}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-vazirmatn"
-        >
-          حذف
-        </button>
-        <button
-          onClick={onClose}
-          className="px-4 py-2 bg-gray-700 text-gray-200 rounded-lg hover:bg-gray-600 transition font-vazirmatn"
-        >
-          لغو
-        </button>
-      </div>
-    </Dialog>
-  );
-};
 /////////////////////////////////////////////
 
 
@@ -59,7 +27,7 @@ const ManageJobs = () => {
   const [checkedJobs, setCheckedJobs] = useState([]);
   const { companyToken, getJobs, isMobile } = useApp()
   const [currentPage, setCurrentPage] = useState(1)
-  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
+  const [warningModal, openWarningModal, closeWarningModal] = useModal()
 
   const perPage = isMobile ? 4 : 7
 
@@ -132,9 +100,10 @@ const ManageJobs = () => {
       </div>
     ) : (
       <div className='container p-4 mt-2 sm:max-w-4xl flex flex-col justify-between h-[85vh] overflow-auto gap-4'>
-        <DeleteConfirm
-          open={isRemoveModalOpen}
-          onClose={() => setIsRemoveModalOpen(false)}
+
+        <Warning
+          open={warningModal}
+          onClose={closeWarningModal}
           onConfirm={removeJobs}
         />
 
@@ -249,7 +218,7 @@ const ManageJobs = () => {
           <div className='flex flex-wrap gap-2 '>
             {checkedJobs.length ? (
               <button
-                onClick={() => setIsRemoveModalOpen(true)}
+                onClick={openWarningModal}
                 className='bg-red-600 dark:shadow-[0_0_20px] dark:shadow-red-800 text-white px-4 py-2 rounded transition hover:scale-105'
               >
                 حذف

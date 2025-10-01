@@ -1,13 +1,15 @@
 import { assets } from '../assets/assets'
 import { useUser, useClerk, UserButton } from '@clerk/clerk-react'
 import { Link, useNavigate } from 'react-router-dom'
-import {  useApp } from '../context/AppProvider'
+import { useApp } from '../context/AppProvider'
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { Sun, Moon } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../context/ThemeContext'
+import Warning from './Modal/Warning';
+import { useModal } from '../hooks/useModal';
 
 //________Theme Toggle Button component
 
@@ -69,16 +71,21 @@ const Navbar = ({ children }) => {
     const { user } = useUser()
     const navigate = useNavigate()
 
-    const { setShowRecruiterLogin, companyData, companyToken, logoutHandler } =useApp()
-
+    const { setShowRecruiterLogin, companyData, companyToken, logoutHandler } = useApp()
+    const [warningModal , openWarningModal,closeWarningModal ] = useModal()
 
 
 
     return (
         <div
-            className='sticky top-0 left-0 z-50 shadow py-4  backdrop-blur-sm dark:bg-slate-900/20 dark:text-gray-100'>
+            className='sticky top-0  z-50 shadow py-4  backdrop-blur-sm dark:bg-slate-900/20 dark:text-gray-100'>
+                 <Warning
+                open={warningModal}
+                onClose={closeWarningModal}
+                onConfirm={logoutHandler}
+                />
             <div className='container min-w-max px-4 2xl:px-16 flex justify-between items-center mx-auto '>
-
+               
                 <div className='flex items-center gap-5 sm:gap-12'>
                     <img
                         className=' h-8 scale-125 sm:scale-150 mr-2  dark:invert dark:hue-rotate-180 cursor-pointer'
@@ -111,19 +118,19 @@ const Navbar = ({ children }) => {
                                                 {companyData.name}
                                             </li>
 
-                                            {children || 
-                                            <li className='py-2  cursor-pointer  hover:bg-gray-100 dark:hover:bg-gray-800 pr-1 '>
+                                            {children ||
+                                                <li className='py-2  cursor-pointer  hover:bg-gray-100 dark:hover:bg-gray-800 pr-1 '>
 
-                                                <Link to='/dashboard'
-                                                    className='flex items-center gap-2'
-                                                >
-                                                    <HiOutlineViewGridAdd fontSize={19} />
-                                                    داشبورد
-                                                </Link>
-                                            </li>
+                                                    <Link to='/dashboard'
+                                                        className='flex items-center gap-2'
+                                                    >
+                                                        <HiOutlineViewGridAdd fontSize={19} />
+                                                        داشبورد
+                                                    </Link>
+                                                </li>
                                             }
 
-                                            <li onClick={logoutHandler} className='py-2  cursor-pointer flex items-center gap-2 pr-1 hover:bg-gray-100 dark:hover:bg-gray-800'>
+                                            <li onClick={openWarningModal} className='py-2  cursor-pointer flex items-center gap-2 pr-1 hover:bg-gray-100 dark:hover:bg-gray-800'>
                                                 <FaArrowRightFromBracket />
                                                 خروج
                                             </li>
@@ -135,7 +142,7 @@ const Navbar = ({ children }) => {
 
                             </div>
 
-            )
+                        )
                         : (
                             <div className='flex gap-4 max-sm:text-sm'>
                                 <button
