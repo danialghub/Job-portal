@@ -242,11 +242,7 @@ const RecruiterLogin = () => {
   // Effects
   // ==========================
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    if (retryAfter <= 0) localStorage.removeItem("retryAfterTime");
-    return () => {
-      document.body.style.overflow = "unset";
-    };
+    if (retryAfter <= 0) localStorage.removeItem("retryAfterTime");    
   }, []);
 
   useEffect(() => {
