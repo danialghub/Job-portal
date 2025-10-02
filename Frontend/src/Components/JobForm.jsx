@@ -102,7 +102,7 @@ const JobForm = ({ job, state, jobId }) => {
         <div className='flex-1  container max-h-[100vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
 
             <div className='min-h-[90vh] max-sm:mb-40 max-w-5xl'>
-                <form className='px-6  p-4 flex flex-col w-full items-start gap-5'>
+                <form className='px-5  p-4 flex flex-col w-full items-start gap-5'>
                     <h3 className='text-2xl sm:text-3xl font-bold text-black/70 my-4 dark:text-gray-100'>فرم {state} کار</h3>
                     <div className='w-full'>
                         <p className='mb-2 text-gray-600 dark:text-gray-300'>عنوان کار</p>

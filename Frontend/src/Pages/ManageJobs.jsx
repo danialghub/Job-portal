@@ -100,7 +100,7 @@ const ManageJobs = () => {
       </div>
     ) : (
       <div className='flex-1 max-h-[100vh] overflow-auto container '>
-        <div className='mb-20 p-4 mt-2 min-h-[90vh]  flex flex-col justify-between sm:max-w-4xl   gap-4 pb-16'>
+        <div className='max-sm:mb-20 p-4 mt-2 min-h-[90vh]  flex flex-col justify-between sm:max-w-4xl   gap-4 pb-16'>
 
           <Warning
             open={warningModal}

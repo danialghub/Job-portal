@@ -59,9 +59,7 @@
   .home-rich-para * {
     @apply dark:text-gray-400 text-gray-600 !bg-transparent;
   }
-  ::placeholder{
-    @apply dark:!text-gray-400 !text-gray-600;
-  }
+  
 
   .rich-text {
     @apply text-[15px] text-[#7A7B7D] break-words dark:text-[#b0b0b0];
