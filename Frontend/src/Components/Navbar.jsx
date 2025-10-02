@@ -72,20 +72,20 @@ const Navbar = ({ children }) => {
     const navigate = useNavigate()
 
     const { setShowRecruiterLogin, companyData, companyToken, logoutHandler } = useApp()
-    const [warningModal , openWarningModal,closeWarningModal ] = useModal()
+    const [warningModal, openWarningModal, closeWarningModal] = useModal()
 
 
 
     return (
         <div
             className='sticky top-0  z-50 shadow py-4  backdrop-blur-sm dark:bg-slate-900/20 dark:text-gray-100'>
-                 <Warning
+            <Warning
                 open={warningModal}
                 onClose={closeWarningModal}
                 onConfirm={logoutHandler}
-                />
+            />
             <div className='container min-w-max px-4 2xl:px-16 flex justify-between items-center mx-auto '>
-               
+
                 <div className='flex items-center gap-5 sm:gap-12'>
                     <img
                         className=' h-8 scale-125 sm:scale-150 mr-2  dark:invert dark:hue-rotate-180 cursor-pointer'
@@ -113,7 +113,7 @@ const Navbar = ({ children }) => {
 
                                     <div className='hidden absolute group-hover:block top-0 left-0  sm:left-0 z-10 text-black rounded pt-12 '>
                                         <ul className='list-none m-0 p-2 bg-white dark:bg-slate-900 dark:text-gray-100 rounded-md border-gray-200 text-sm shadow-2xl dark:border-slate-800 '>
-                                            <li onClick={logoutHandler} className='py-2 pl-8 cursor-pointer flex items-center gap-2 px-6 border-gray-300 border-b-2 mb-2'>
+                                            <li className='py-2 pl-8 cursor-pointer flex items-center gap-2 px-6 border-gray-300 border-b-2 mb-2'>
                                                 <FaUser />
                                                 {companyData.name}
                                             </li>
