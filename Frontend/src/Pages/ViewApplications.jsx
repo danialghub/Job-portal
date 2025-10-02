@@ -61,8 +61,8 @@ const ViewApplications = () => {
     </div>
   ) : (
 
-    <div className=' sm:max-w-4xl p-4 container max-h-screen overflow-y-auto'>
-      <div className="flex flex-col  justify-between flex-1 gap-4 h-[80vh] ">
+      <div className="flex-1 container max-h-screen overflow-y-auto ">
+    <div className=' sm:max-w-4xl p-4 min-h-[90vh] max-sm:mb-26 sm:pb-16  flex flex-col  justify-between  gap-4'>
 
 
         {/* Desktop Table */}

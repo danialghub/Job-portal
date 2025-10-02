@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import {  useApp } from '../context/AppProvider'
+import { useApp } from '../context/AppProvider'
 import Quill from 'quill'
 import { JobCategories, JobLocations } from '../assets/assets'
 
@@ -99,79 +99,85 @@ const JobForm = ({ job, state, jobId }) => {
 
 
     return (
-        <div className='flex-1  container max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>        <form className=' max-w-5xl p-4 flex flex-col w-full items-start gap-5'>
-            <h3 className='text-2xl sm:text-3xl font-bold text-black/70 my-4 dark:text-gray-100'>فرم {state} کار</h3>
-            <div className='w-full'>
-                <p className='mb-2 text-gray-600 dark:text-gray-300'>عنوان کار</p>
-                <input
-                    placeholder='عنوان'
-                    onChange={e => setTitle(e.target.value)}
-                    value={title}
-                    type="text"
-                    className='w-full max-w-lg px-3 py-1 sm:py-2 border-2 border-gray-300 rounded dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
-                />
+        <div className='flex-1  container max-h-[100vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
+
+            <div className='min-h-[90vh] max-sm:mb-40 max-w-5xl'>
+                <form className='px-6  p-4 flex flex-col w-full items-start gap-5'>
+                    <h3 className='text-2xl sm:text-3xl font-bold text-black/70 my-4 dark:text-gray-100'>فرم {state} کار</h3>
+                    <div className='w-full'>
+                        <p className='mb-2 text-gray-600 dark:text-gray-300'>عنوان کار</p>
+                        <input
+                            placeholder='عنوان'
+                            onChange={e => setTitle(e.target.value)}
+                            value={title}
+                            type="text"
+                            className='w-full max-w-lg px-3 py-1 sm:py-2 border-2 border-gray-300 rounded dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
+                        />
+                    </div>
+                    <div className='w-full '>
+                        <p className='my-2 text-gray-600 dark:text-gray-300'>توضیحات کار</p>
+                        <div className='dark:text-gray-100 dark:bg-slate-900' ref={editorRef} ></div>
+
+                    </div>
+                    <div className='flex flex-col items-start sm:flex-row w-full  sm:items-center gap-8 sm:gap-8'>
+                        <div className='w-full'>
+                            <p className='mb-2 text-gray-600 dark:text-gray-300'>دسته بندی کار</p>
+                            <select
+                                className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
+                                value={category}
+                                onChange={e => setCategory(e.target.value)}>
+                                {JobCategories.map((item, idx) => (
+                                    <option key={idx} value={item}>{item}</option>
+                                ))
+
+                                }
+                            </select>
+                        </div>
+                        <div className='w-full'>
+                            <p className='mb-2 text-gray-600 dark:text-gray-300'>مکان کار</p>
+                            <select
+                                className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
+                                value={location}
+                                onChange={e => setLocation(e.target.value)}>
+                                {JobLocations.map((item, idx) => (
+                                    <option key={idx} value={item}>{item}</option>
+                                ))
+
+                                }
+                            </select>
+                        </div>
+                        <div className='w-full'>
+                            <p className='mb-2 text-gray-600 dark:text-gray-300'>سطح کار</p>
+                            <select
+                                className='w-full  px-3 py-1 sm:py-2 border-2 border-gray-300 rounded outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
+                                value={level}
+                                onChange={e => setLevel(e.target.value)}>
+
+                                <option value='سطح مبتدی'>سطح مبتدی</option>
+                                <option value='سطح جونیور'>سطح جونیور</option>
+                                <option value='سطح سنیور'>سطح سنیور</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className='w-full'>
+                        <p className='mb-2 text-gray-600 dark:text-gray-300' >حقوق کار</p>
+                        <input
+                            value={salary}
+                            className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded sm:w-[120px] dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
+                            onChange={e => setSalary(e.target.value)}
+                            type="Number"
+                            min={0} />
+                    </div>
+                    <button
+                        onClick={onSubmitHandler}
+                        className='w-28 py-2 my-4 bg-gray-800 text-white rounded '>{state}</button>
+
+                </form>
             </div>
-            <div className='w-full '>
-                <p className='my-2 text-gray-600 dark:text-gray-300'>توضیحات کار</p>
-                <div className='dark:text-gray-100 dark:bg-slate-900' ref={editorRef} ></div>
 
-            </div>
-            <div className='flex flex-col items-start sm:flex-row w-full  sm:items-center gap-8 sm:gap-8'>
-                <div className='w-full'>
-                    <p className='mb-2 text-gray-600 dark:text-gray-300'>دسته بندی کار</p>
-                    <select
-                        className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
-                        value={category}
-                        onChange={e => setCategory(e.target.value)}>
-                        {JobCategories.map((item, idx) => (
-                            <option key={idx} value={item}>{item}</option>
-                        ))
 
-                        }
-                    </select>
-                </div>
-                <div className='w-full'>
-                    <p className='mb-2 text-gray-600 dark:text-gray-300'>مکان کار</p>
-                    <select
-                        className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded  outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
-                        value={location}
-                        onChange={e => setLocation(e.target.value)}>
-                        {JobLocations.map((item, idx) => (
-                            <option key={idx} value={item}>{item}</option>
-                        ))
-
-                        }
-                    </select>
-                </div>
-                <div className='w-full'>
-                    <p className='mb-2 text-gray-600 dark:text-gray-300'>سطح کار</p>
-                    <select
-                        className='w-full  px-3 py-1 sm:py-2 border-2 border-gray-300 rounded outline-none dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
-                        value={level}
-                        onChange={e => setLevel(e.target.value)}>
-
-                        <option value='سطح مبتدی'>سطح مبتدی</option>
-                        <option value='سطح جونیور'>سطح جونیور</option>
-                        <option value='سطح سنیور'>سطح سنیور</option>
-
-                    </select>
-                </div>
-            </div>
-
-            <div className='w-full'>
-                <p className='mb-2 text-gray-600 dark:text-gray-300' >حقوق کار</p>
-                <input
-                    value={salary}
-                    className='w-full px-3 py-1 sm:py-2 border-2 border-gray-300 rounded sm:w-[120px] dark:bg-slate-900 dark:border-slate-800 dark:text-gray-100'
-                    onChange={e => setSalary(e.target.value)}
-                    type="Number"
-                    min={0} />
-            </div>
-            <button
-                onClick={onSubmitHandler}
-                className='w-28 py-2 my-4 bg-gray-800 text-white rounded '>{state}</button>
-
-        </form>
         </div>
 
     )

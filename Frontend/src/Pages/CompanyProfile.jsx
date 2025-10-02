@@ -100,8 +100,8 @@ export default function CompanyProfile() {
   }
 
   return (
-    <div className='flex-1 h-[90vh] w-full overflow-y-auto'>
-      <div className=" lg:h-[80vh]    flex items-center justify-center p-4 sm:p-6  dark:bg-slate-950 transition-colors duration-300">
+    <div className='flex-1 h-[100vh] w-full overflow-y-auto'>
+      <div className=" min-h-[90vh] max-sm:mb-40  flex items-center justify-center p-4 sm:p-6  dark:bg-slate-950 transition-colors duration-300">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

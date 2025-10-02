@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Modal from '../../layout/Modal'
 
 const Warning = ({ open, onClose, onConfirm }) => {
